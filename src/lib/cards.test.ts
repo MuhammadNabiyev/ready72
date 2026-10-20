@@ -51,6 +51,14 @@ describe("members", () => {
     expect(addFromHousehold(once).members).toHaveLength(4);
     expect(addFromHousehold({ ...EMPTY_STATE }).members).toHaveLength(0);
   });
+  it("people you already added count toward the household, so it only fills the gap", () => {
+    let s = addMember(base(), draft({ name: "Marisol" }));
+    s = addMember(s, draft({ name: "Diego" }));
+    s = addFromHousehold(s);
+    expect(s.members).toHaveLength(4);
+    expect(s.members.slice(0, 2).map((m) => m.name)).toEqual(["Marisol", "Diego"]);
+    expect(addFromHousehold(s).members).toHaveLength(4);
+  });
 });
 
 describe("cards", () => {

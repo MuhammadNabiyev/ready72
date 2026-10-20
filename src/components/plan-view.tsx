@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { CalendarPlus, Copy, Link2, Phone, Printer, Trash2 } from "lucide-react";
 import { addContact, addPoint, logDrill, planText, removeContact, removePoint, setNotes, validateContact, type ContactErrors } from "@/lib/actions";
@@ -213,9 +214,12 @@ export function PlanView() {
                 "You have not logged a drill yet."
               )}
             </p>
+            <Link href="/drill" className="btn btn-primary mt-4 mr-3" data-testid="start-timed-drill">
+              Start a timed drill
+            </Link>
             <button
               type="button"
-              className="btn btn-primary mt-4"
+              className="btn mt-4"
               data-testid="log-drill"
               onClick={() => {
                 commit((s) => logDrill(s, dayKey(new Date())));

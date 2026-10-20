@@ -9,9 +9,9 @@ export const ALTITUDE_LIMIT_M = 2000;
 export type BleachStrength = "5" | "6" | "8.25";
 
 export const BLEACH_STRENGTHS: { value: BleachStrength; label: string; dropsPerGallon: number }[] = [
-  { value: "5", label: "5% (some store brands)", dropsPerGallon: 10 },
-  { value: "6", label: "6% (most household bleach)", dropsPerGallon: 8 },
-  { value: "8.25", label: "8.25% (concentrated)", dropsPerGallon: 6 },
+  { value: "5", label: "5% (store brand)", dropsPerGallon: 10 },
+  { value: "6", label: "6% (household)", dropsPerGallon: 8 },
+  { value: "8.25", label: "8.25% (strong)", dropsPerGallon: 6 },
 ];
 
 /** Minutes at a rolling boil. */

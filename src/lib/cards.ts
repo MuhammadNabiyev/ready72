@@ -61,13 +61,21 @@ export function placeholderNames(p: Profile): string[] {
   return names;
 }
 
-/** Add one blank-but-named member for each person in the household who has no card yet. Never duplicates a name. */
+/**
+ * Fill the list up to the household size with named blank members ("Adult 2", "Child 1"...).
+ * Real people already added count toward the total, and a name is never used twice.
+ */
 export function addFromHousehold(state: State): State {
   if (!state.profile) return state;
+  const names = placeholderNames(state.profile);
   const have = new Set(state.members.map((m) => m.name.toLowerCase()));
+  let toAdd = names.length - state.members.length;
   let next = state;
-  for (const name of placeholderNames(state.profile)) {
-    if (!have.has(name.toLowerCase())) next = addMember(next, { ...emptyDraft(), name });
+  for (const name of names) {
+    if (toAdd <= 0) break;
+    if (have.has(name.toLowerCase())) continue;
+    next = addMember(next, { ...emptyDraft(), name });
+    toAdd--;
   }
   return next;
 }

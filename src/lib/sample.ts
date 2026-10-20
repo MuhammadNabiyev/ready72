@@ -55,8 +55,20 @@ export function sampleState(today: Date): State {
     drills: [format(subDays(today, 200), "yyyy-MM-dd")],
     notes: "Gas shutoff is behind the garage. Neighbor on the left has a spare key.",
     scenarios: [],
-    members: [],
-    maintenance: { done: {}, custom: [] },
-    drillRuns: [],
+    members: [
+      { id: "sample_p1", name: "Marisol Alvarez", blood: "O+", allergies: "Penicillin", medications: "Lisinopril 10 mg, once a day", notes: "" },
+      { id: "sample_p2", name: "Diego Alvarez", blood: "A+", allergies: "", medications: "", notes: "Wears glasses" },
+      { id: "sample_p3", name: "Lucia Alvarez", blood: "O+", allergies: "Peanuts", medications: "Epinephrine auto-injector", notes: "Carries the injector in her school bag" },
+    ],
+    maintenance: {
+      done: {
+        smoke: format(subDays(today, 41), "yyyy-MM-dd"),
+        "water-rotate": format(subDays(today, 170), "yyyy-MM-dd"),
+        batteries: format(subDays(today, 120), "yyyy-MM-dd"),
+        extinguisher: format(subDays(today, 20), "yyyy-MM-dd"),
+      },
+      custom: [],
+    },
+    drillRuns: [{ date: format(subDays(today, 200), "yyyy-MM-dd"), seconds: 13 * 60 + 5, stepsDone: 7, stepsTotal: 7 }],
   };
 }

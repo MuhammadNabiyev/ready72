@@ -27,13 +27,17 @@ Authorities say to be able to survive on your own for at least 72 hours. Almost 
 | **Command palette** | `Ctrl/Cmd + K` jumps to any page or runs an action (log a drill, copy the share link, switch theme, share your card). |
 | **Night mode** | A full dark theme, remembered between visits, with no flash on load. |
 | **Share card** | A 1200x630 image of your score and days covered, plus ready-to-post text. It never includes your kit or contacts. |
+| **Evacuation drill** | `/drill`: a live 15-minute countdown and a step checklist built from your own household (go-bag, pets, medication, mobility, meeting point). Finishing every step logs a drill and keeps your best time. |
+| **Home maintenance** | `/maintenance`: recurring tasks (smoke alarms monthly, stored water and go-bag every 6 months, batteries and extinguisher yearly, plus ones for your hazards, pets and medication). One tap "Done today", overdue and due-soon states, your own tasks. Feeds the dashboard alerts and the calendar export (repeating events). |
+| **Emergency cards** | `/cards`: a wallet-size card per person with blood type, allergies, medication, notes and the contacts from your plan. Print-ready sheet on A4, black on white in any theme. |
+| **Water treatment helper** | On `/guides`: boiling time by altitude and bleach drops per liter by bleach strength, clear or cloudy water, with a quick table and your household's daily amount. |
 | **Offline PWA** | Service worker + web manifest; data lives in `localStorage`. Backup and restore as JSON. |
 
 ## How it is tested (and how that is wired into shipping)
 
 Ready72's value is in its numbers, so the numbers are tested twice, at two levels:
 
-1. **Unit tests for the preparedness engine** (`src/lib/*.test.ts`, 66 tests, Vitest). Pure functions, no DOM: requirement math, coverage and expiry, scoring weights, next actions, shopping list, alerts, scenario evaluation, custom scenarios, the time-machine timeline and narration, share card text, runway, share-link round trip, calendar output, input validation.
+1. **Unit tests for the preparedness engine** (`src/lib/*.test.ts`, 131 tests, Vitest). Pure functions, no DOM: drill timer and best-time logic, maintenance scheduling (overdue, soon, never done, custom tasks, calendar output), wallet-card data, water-treatment doses, loading older saved data; plus requirement math, coverage and expiry, scoring weights, next actions, shopping list, alerts, scenario evaluation, custom scenarios, the time-machine timeline and narration, share card text, runway, share-link round trip, calendar output, input validation.
 2. **End-to-end UI tests with [TestSprite](https://www.testsprite.com)** run against the deployed app on **every pull request** through the TestSprite GitHub App: household setup and live preview, kit entry dialogs (validation, presets, expiry picker), shopping list, plan forms, stress-test verdicts, crisis mode, settings (reset, restore).
 
 GitHub Actions (`.github/workflows/ci.yml`) also runs lint, type check, unit tests and the production build on every PR, so a change cannot reach TestSprite without passing the cheap checks first. Every important control has a stable `data-testid`.

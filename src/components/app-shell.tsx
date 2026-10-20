@@ -18,7 +18,12 @@ const NAV: { href: string; label: string; short: string; icon: PictogramName }[]
   { href: "/plan", label: "Family plan", short: "Plan", icon: "plan" },
   { href: "/stress-test", label: "Stress test", short: "Test", icon: "warning" },
   { href: "/guides", label: "Guides", short: "Guides", icon: "info" },
+  { href: "/tools", label: "Tools", short: "Tools", icon: "tools" },
 ];
+
+/** The Tools tab also covers the pages it links to. */
+const TOOL_PATHS = ["/tools", "/drill", "/maintenance", "/cards"];
+const isActive = (path: string, href: string) => path === href || (href === "/tools" && TOOL_PATHS.includes(path));
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const state = useApp();
@@ -40,7 +45,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </Link>
           <nav aria-label="Main" className="ml-2 hidden flex-1 items-center gap-1 xl:flex">
             {NAV.map((n) => {
-              const active = path === n.href;
+              const active = isActive(path, n.href);
               return (
                 <Link
                   key={n.href}
@@ -112,9 +117,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <CommandPalette />
       {sharing && <ShareCardDialog onClose={() => setSharing(false)} />}
 
-      <nav aria-label="Main" className="no-print fixed inset-x-0 bottom-0 z-40 grid grid-cols-6 border-t border-rule-strong bg-canvas md:hidden">
+      <nav aria-label="Main" className="no-print fixed inset-x-0 bottom-0 z-40 grid grid-cols-7 border-t border-rule-strong bg-canvas md:hidden">
         {NAV.map((n) => {
-          const active = path === n.href;
+          const active = isActive(path, n.href);
           return (
             <Link
               key={n.href}
