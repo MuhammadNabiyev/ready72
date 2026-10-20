@@ -4,6 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as Select from "@radix-ui/react-select";
 import { Check, ChevronDown, Minus, Plus, X } from "lucide-react";
 import { useSyncExternalStore } from "react";
+import { PictoTile, StatusShape, type PictogramName } from "./pictogram";
 
 /* ---------------- Modal ---------------- */
 
@@ -15,6 +16,7 @@ export function Modal({
   children,
   testId,
   wide,
+  icon,
 }: {
   open: boolean;
   onOpenChange: (o: boolean) => void;
@@ -23,22 +25,24 @@ export function Modal({
   children: React.ReactNode;
   testId?: string;
   wide?: boolean;
+  icon?: PictogramName;
 }) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="overlay" />
         <Dialog.Content className="modal" data-testid={testId} data-wide={wide ? "true" : "false"}>
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <Dialog.Title className="font-display text-2xl font-bold" style={{ fontVariationSettings: '"wdth" 112' }}>
+          <div className="flex items-start gap-4">
+            {icon && <PictoTile name={icon} className="size-12 rounded-xl" />}
+            <div className="min-w-0 flex-1">
+              <Dialog.Title className="font-display text-2xl font-bold">
                 {title}
               </Dialog.Title>
               <Dialog.Description className="mt-1 text-ink-soft">{description}</Dialog.Description>
             </div>
             <Dialog.Close
               aria-label="Close"
-              className="-mr-2 -mt-1 grid size-10 shrink-0 place-items-center rounded hover:bg-canvas-2"
+              className="-mr-2 -mt-1 grid size-11 shrink-0 place-items-center rounded-lg transition-colors hover:bg-canvas-2"
             >
               <X className="size-5" aria-hidden />
             </Dialog.Close>
@@ -109,7 +113,7 @@ export function Stepper({
   testId?: string;
 }) {
   return (
-    <div className="inline-flex items-center border-2 border-ink rounded bg-paper" role="group" aria-label={label}>
+    <div className="inline-flex items-center border border-rule-strong rounded-xl bg-paper" role="group" aria-label={label}>
       <button
         type="button"
         aria-label={`Decrease ${label}`}
@@ -164,14 +168,15 @@ const subscribeToasts = (cb: () => void) => {
 export function Toaster() {
   const list = useSyncExternalStore(subscribeToasts, () => toasts, () => NO_TOASTS);
   return (
-    <div aria-live="polite" role="status" className="pointer-events-none fixed bottom-24 left-1/2 z-[70] flex -translate-x-1/2 flex-col items-center gap-2 md:bottom-8">
+    <div aria-live="polite" role="status" className="pointer-events-none fixed bottom-24 left-1/2 z-[70] flex -translate-x-1/2 flex-col items-center gap-2 xl:bottom-8">
       {list.map((t) => (
         <div
           key={t.id}
           data-testid="toast"
-          className="pointer-events-auto rounded border-2 border-ink bg-ink px-4 py-2.5 font-semibold text-canvas shadow-[0_10px_30px_-10px_oklch(0.2_0.02_255/0.6)]"
+          className="pointer-events-auto flex items-center gap-3 rounded-xl bg-ink py-2.5 pr-5 pl-3 font-semibold text-canvas shadow-[0_14px_34px_-14px_oklch(0.2_0.03_170/0.7)]"
           style={{ animation: "toast-in 260ms var(--ease-out) both" }}
         >
+          <StatusShape kind="ok" className="size-6" />
           {t.text}
         </div>
       ))}
@@ -206,6 +211,24 @@ export function Field({
           {error}
         </p>
       )}
+    </div>
+  );
+}
+
+/** A small round separator for inline metadata, drawn rather than typed so it never hugs the next word. */
+export function Sep() {
+  return <span aria-hidden className="mx-2 inline-block size-[0.3em] -translate-y-[0.1em] rounded-full bg-current opacity-60" />;
+}
+
+/** A section heading with a pictogram tile, the way a sign names a room. */
+export function SectionHead({ icon, title, id, children }: { icon: PictogramName; title: string; id: string; children?: React.ReactNode }) {
+  return (
+    <div className={`flex gap-4 ${children ? "items-start" : "items-center"}`}>
+      <PictoTile name={icon} className="size-12 rounded-xl" />
+      <div className="min-w-0">
+        <h2 id={id} className="text-3xl">{title}</h2>
+        {children && <p className="mt-1.5 max-w-[52ch] text-ink-soft">{children}</p>}
+      </div>
     </div>
   );
 }

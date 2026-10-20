@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { loadSample, useApp } from "@/lib/store";
 import { ClientOnly } from "./client-only";
-import { ReadinessGauge, useCountUp } from "./gauge";
+import { useCountUp } from "./gauge";
+import { Pictogram, type PictogramName } from "./pictogram";
 
 export function HomeCtas() {
   return (
@@ -46,40 +47,38 @@ function Inner() {
   );
 }
 
-/** A static, clearly labelled illustration of the dashboard. */
+/** A static, clearly labelled illustration of the dashboard, drawn as a safety sign. */
 export function SampleReadout() {
   const days = useCountUp(2.4);
-  const bars = [
-    { label: "Water", v: 0.8, c: "var(--signal)" },
-    { label: "Food", v: 0.8, c: "var(--signal)" },
-    { label: "Medication", v: 0.7, c: "var(--signal)" },
-    { label: "Light & power", v: 0.5, c: "var(--signal)" },
-    { label: "Family plan", v: 0.2, c: "var(--bad)" },
+  const rows: { label: string; v: number; icon: PictogramName; state: "mid" | "full" | "empty" }[] = [
+    { label: "Water", v: 0.8, icon: "water", state: "mid" },
+    { label: "Food", v: 0.8, icon: "food", state: "mid" },
+    { label: "Medication", v: 0.7, icon: "meds", state: "mid" },
+    { label: "Light & power", v: 0.5, icon: "power", state: "mid" },
+    { label: "Family plan", v: 0.2, icon: "plan", state: "empty" },
   ];
   return (
-    <figure className="rise relative rounded-md border-2 border-ink bg-paper p-5 shadow-[8px_8px_0_var(--ink)] sm:p-7" style={{ ["--d" as string]: 3 }} aria-label="Illustration of the Ready72 dashboard">
-      <figcaption className="mono-label mb-4 flex items-center justify-between">
+    <figure className="sign sign-green flip px-7 pt-9 pb-10 shadow-[var(--shadow-soft)] sm:px-10" aria-label="Illustration of the Ready72 dashboard">
+      <figcaption className="flex items-center justify-between text-xs font-extrabold tracking-[0.16em] uppercase">
         <span>Sample household</span>
         <span>Illustration</span>
       </figcaption>
-      <p className="font-display text-4xl font-extrabold leading-none sm:text-5xl" style={{ fontVariationSettings: '"wdth" 112' }}>
-        Ready for <span className="tnum text-signal-deep">{days.toFixed(1)}</span> of 3 days.
+      <p className="mt-5 text-[clamp(2.3rem,3.8vw,3.3rem)] leading-[0.98] font-black tracking-[-0.03em]">
+        Ready for <span className="tnum hl">{days.toFixed(1)}</span> of 3 days.
       </p>
-      <div className="mt-6">
-        <ReadinessGauge score={62} />
-      </div>
-      <ul className="mt-6 space-y-3" aria-hidden>
-        {bars.map((b) => (
-          <li key={b.label} className="grid grid-cols-[7rem_1fr] items-center gap-3 text-sm">
-            <span className="font-semibold">{b.label}</span>
-            <span className="relative h-2.5 border-[1.5px] border-ink bg-canvas-2">
-              <span className="absolute inset-y-0 left-0 origin-left" style={{ width: `${b.v * 100}%`, background: b.c, animation: "grow 900ms var(--ease-out) both" }} />
+      <ul className="mt-8 space-y-3.5" aria-hidden>
+        {rows.map((b) => (
+          <li key={b.label} className="grid grid-cols-[2rem_6.5rem_1fr] items-center gap-3 text-sm font-bold sm:grid-cols-[2rem_7.5rem_1fr]">
+            <Pictogram name={b.icon} className="size-7" />
+            <span>{b.label}</span>
+            <span className="bar" data-state={b.state}>
+              <span style={{ transform: `scaleX(${b.v})` }} />
             </span>
           </li>
         ))}
       </ul>
-      <p className="mt-6 border-t-2 border-ink pt-3 font-semibold">
-        Next: <span className="font-normal">Store 14 more liters of water</span>
+      <p className="mt-8 border-t-2 border-current/40 pt-4 font-bold">
+        Next: <span className="font-medium">Store 14 more liters of water</span>
       </p>
     </figure>
   );

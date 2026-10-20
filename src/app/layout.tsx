@@ -1,23 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Hanken_Grotesk, IBM_Plex_Mono } from "next/font/google";
+import { Overpass, Overpass_Mono } from "next/font/google";
 import { SwRegister } from "@/components/sw-register";
-import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import { Toaster } from "@/components/ui";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
-const display = Archivo({
-  variable: "--font-archivo",
-  subsets: ["latin"],
-  axes: ["wdth"],
-});
-const sans = Hanken_Grotesk({
-  variable: "--font-hanken",
+// Overpass descends from Highway Gothic, the typeface of road signs: built to be read at a glance, from a distance, in bad light.
+const sans = Overpass({
+  variable: "--font-overpass",
   subsets: ["latin"],
 });
-const mono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
+const mono = Overpass_Mono({
+  variable: "--font-overpass-mono",
   subsets: ["latin"],
-  weight: ["500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -27,12 +22,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f6f2e9",
+  themeColor: "#f1efe8",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>

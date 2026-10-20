@@ -100,6 +100,34 @@ export type Scenario = {
   custom?: boolean;
 };
 
+export type BloodType = "" | "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
+
+/** A person in the household, used for the printable emergency wallet cards. */
+export type Member = {
+  id: string;
+  name: string;
+  /** empty string = unknown */
+  blood: BloodType;
+  allergies: string;
+  medications: string;
+  /** anything a responder should know: conditions, implants, language, mobility */
+  notes: string;
+};
+
+export type CustomTask = { id: string; label: string; everyDays: number };
+
+/** Home maintenance: when each recurring task was last done (yyyy-MM-dd) plus the user's own tasks. */
+export type Maintenance = { done: Record<string, string>; custom: CustomTask[] };
+
+/** One timed evacuation drill. */
+export type DrillRun = {
+  /** yyyy-MM-dd */
+  date: string;
+  seconds: number;
+  stepsDone: number;
+  stepsTotal: number;
+};
+
 export type State = {
   profile: Profile | null;
   entries: Entry[];
@@ -110,6 +138,12 @@ export type State = {
   notes: string;
   /** scenarios created by the user */
   scenarios: Scenario[];
+  /** people for the emergency wallet cards */
+  members: Member[];
+  /** recurring home maintenance */
+  maintenance: Maintenance;
+  /** timed evacuation drills, newest first */
+  drillRuns: DrillRun[];
 };
 
 export const EMPTY_STATE: State = {
@@ -120,4 +154,7 @@ export const EMPTY_STATE: State = {
   drills: [],
   notes: "",
   scenarios: [],
+  members: [],
+  maintenance: { done: {}, custom: [] },
+  drillRuns: [],
 };

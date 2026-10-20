@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Pictogram } from "./pictogram";
 
 const prefersReduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -28,10 +29,13 @@ export function useCountUp(target: number, ms = 900) {
   return reduced ? target : value;
 }
 
-/** A fuel-gauge of 40 ticks; each tick is 2.5 points of readiness. */
-export function ReadinessGauge({ score }: { score: number }) {
-  const total = 40;
-  const on = Math.round((score / 100) * total);
+const tone = (score: number) => (score >= 50 ? "green" : score >= 25 ? "yellow" : "red");
+
+/** The readiness score as a safety sign: green is safe, yellow is caution, red is danger. */
+export function ReadinessGauge({ score, level }: { score: number; level?: string }) {
+  const shown = useCountUp(score, 1100);
+  const t = tone(score);
+  const lit = Math.round(score / 5);
   return (
     <div
       role="meter"
@@ -40,23 +44,33 @@ export function ReadinessGauge({ score }: { score: number }) {
       aria-valuemax={100}
       aria-valuenow={score}
       data-testid="gauge"
-      className="flex h-16 items-end gap-[3px] sm:gap-1"
+      data-tone={t}
+      className={`sign sign-${t} flip px-8 pt-9 pb-10 text-center shadow-[var(--shadow-soft)]`}
     >
-      {Array.from({ length: total }, (_, i) => (
-        <span
-          key={i}
-          className="tick flex-1 rounded-[1px]"
-          data-on={i < on ? "true" : "false"}
-          style={{ ["--i" as string]: i, height: i % 5 === 4 ? "100%" : "78%" }}
-        />
-      ))}
+      <p className="flex items-center justify-center gap-2.5 text-base font-extrabold tracking-[0.16em] uppercase">
+        <Pictogram name={t === "green" ? "shield" : t === "yellow" ? "warning" : "cross"} className="size-7" />
+        <span data-testid="level">{level ?? ""}</span>
+      </p>
+      <p className="mt-3 text-[clamp(6rem,14vw,9rem)] leading-[0.86] font-black tracking-[-0.04em] tnum" data-testid="score">
+        {Math.round(shown)}
+      </p>
+      <p className="mt-2 text-lg font-bold">out of 100</p>
+      <div className="mx-auto mt-6 flex max-w-[16rem] gap-[3px]" aria-hidden>
+        {Array.from({ length: 20 }, (_, i) => (
+          <span
+            key={i}
+            className="h-4 flex-1 rounded-[2px] bg-current"
+            style={{ opacity: i < lit ? 1 : 0.22, transformOrigin: "bottom", animation: i < lit ? `grow-y 420ms var(--ease-out) ${300 + i * 28}ms both` : undefined }}
+          />
+        ))}
+      </div>
     </div>
   );
 }
 
 /** Horizontal supply bar. `fraction` is 0..1. */
 export function SupplyBar({ fraction, label }: { fraction: number; label: string }) {
-  const state = fraction >= 1 ? "full" : fraction <= 0.05 ? "empty" : "mid";
+  const state = fraction >= 0.75 ? "full" : fraction < 0.34 ? "empty" : "mid";
   return (
     <div className="bar" data-state={state} role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(fraction * 100)}>
       <span style={{ transform: `scaleX(${Math.max(0.02, fraction)})` }} />

@@ -6,13 +6,32 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CornerDownLeft, Search } from "lucide-react";
 import { logDrill } from "@/lib/actions";
 import { dayKey } from "@/lib/engine";
+import { markDone } from "@/lib/maintenance";
 import { encodeShare, toSharedPlan } from "@/lib/share";
 import { commit, getState, loadSample } from "@/lib/store";
 import { getTheme, toggleTheme } from "@/lib/theme";
+import { Pictogram, type PictogramName } from "./pictogram";
 import { toast } from "./ui";
 
 export const OPEN_PALETTE = "ready72:palette";
 export const OPEN_SHARE = "ready72:share";
+
+const ICON: Record<string, PictogramName> = {
+  "go-dashboard": "shield",
+  "go-kit": "bag",
+  "go-shopping": "food",
+  "go-plan": "plan",
+  "go-stress": "warning",
+  "go-guides": "info",
+  "go-crisis": "power",
+  "go-settings": "tools",
+  "go-home": "shield",
+  "do-drill": "check",
+  "do-share": "plan",
+  "do-link": "plan",
+  "do-theme": "time",
+  "do-sample": "docs",
+};
 
 type Item = { id: string; label: string; hint: string; group: "Go to" | "Do"; keywords?: string; run: () => void };
 
@@ -34,6 +53,11 @@ export function CommandPalette() {
       { id: "go-plan", label: "Family plan", hint: "Contacts, meeting points, drills", group: "Go to", keywords: "contacts meeting drill notes", run: go("/plan") },
       { id: "go-stress", label: "Stress test", hint: "Test your kit against a scenario", group: "Go to", keywords: "scenario evacuate outage", run: go("/stress-test") },
       { id: "go-guides", label: "Hazard guides", hint: "Before, during and after", group: "Go to", keywords: "earthquake flood wildfire", run: go("/guides") },
+      { id: "go-tools", label: "Tools", hint: "Drill, maintenance, emergency cards, water", group: "Go to", keywords: "extras", run: go("/tools") },
+      { id: "go-drill", label: "Evacuation drill", hint: "Timed 15-minute run with a checklist", group: "Go to", keywords: "practice evacuate timer countdown best time", run: go("/drill") },
+      { id: "go-maintenance", label: "Home maintenance", hint: "What is due: alarms, water, batteries", group: "Go to", keywords: "smoke alarm battery extinguisher recurring schedule", run: go("/maintenance") },
+      { id: "go-cards", label: "Emergency cards", hint: "Printable wallet cards", group: "Go to", keywords: "wallet blood type allergies medication print", run: go("/cards") },
+      { id: "go-water", label: "Make water safe", hint: "Boiling time and bleach drops", group: "Go to", keywords: "purify treat bleach boil drinking", run: go("/guides#water-h") },
       { id: "go-crisis", label: "Crisis mode", hint: "What to do right now", group: "Go to", keywords: "emergency help", run: go("/crisis") },
       { id: "go-settings", label: "Settings", hint: "Household, backup, erase", group: "Go to", keywords: "backup restore household", run: go("/settings") },
       { id: "go-home", label: "Home page", hint: "Back to the start", group: "Go to", run: go("/") },
@@ -46,6 +70,17 @@ export function CommandPalette() {
         run: () => {
           commit((s) => logDrill(s, dayKey(new Date())));
           toast("Drill logged. Nice work");
+        },
+      },
+      {
+        id: "do-smoke",
+        label: "Mark smoke alarms tested today",
+        hint: "Resets the monthly reminder",
+        group: "Do",
+        keywords: "maintenance check alarm",
+        run: () => {
+          commit((s) => markDone(s, "smoke", dayKey(new Date())));
+          toast("Smoke alarm test recorded. Next one in 30 days");
         },
       },
       { id: "do-share", label: "Share my readiness card", hint: "Image and text for posting", group: "Do", keywords: "tweet image png", run: () => window.dispatchEvent(new Event(OPEN_SHARE)) },
@@ -131,13 +166,13 @@ export function CommandPalette() {
       <Dialog.Portal>
         <Dialog.Overlay className="overlay" />
         <Dialog.Content
-          className="fixed top-[12vh] left-1/2 z-[55] w-[min(36rem,calc(100vw-1.5rem))] -translate-x-1/2 overflow-hidden rounded-lg border-2 border-ink bg-paper shadow-[0_24px_60px_-20px_oklch(0.2_0.02_255/0.5)]"
+          className="fixed top-[12vh] left-1/2 z-[55] w-[min(36rem,calc(100vw-1.5rem))] -translate-x-1/2 overflow-hidden rounded-2xl border border-rule-strong bg-paper shadow-[0_30px_70px_-24px_oklch(0.2_0.03_170/0.6)]"
           style={{ animation: "pop 180ms var(--ease-out)" }}
           data-testid="palette"
         >
           <Dialog.Title className="sr-only">Command palette</Dialog.Title>
           <Dialog.Description className="sr-only">Type to filter. Arrow keys move, Enter runs, Escape closes.</Dialog.Description>
-          <div className="flex items-center gap-3 border-b-2 border-ink px-4">
+          <div className="flex items-center gap-3 border-b border-rule-strong px-4">
             <Search className="size-5 shrink-0 text-ink-soft" aria-hidden />
             <input
               role="combobox"
@@ -157,7 +192,7 @@ export function CommandPalette() {
               autoFocus
             />
           </div>
-          <ul id="palette-list" ref={listRef} role="listbox" aria-label="Results" className="max-h-[50vh] overflow-y-auto p-2" data-testid="palette-list">
+          <ul id="palette-list" ref={listRef} role="listbox" aria-label="Results" className="thin-scroll max-h-[50vh] overflow-y-auto p-2" data-testid="palette-list">
             {shown.length === 0 && (
               <li className="px-3 py-6 text-center text-ink-soft" data-testid="palette-empty">
                 Nothing matches “{query}”.
@@ -175,9 +210,10 @@ export function CommandPalette() {
                     data-testid={`palette-${item.id}`}
                     onMouseMove={() => setActive(i)}
                     onClick={() => choose(item)}
-                    className="flex min-h-12 cursor-pointer items-center justify-between gap-4 rounded px-3 py-2 aria-selected:bg-ink aria-selected:text-canvas"
+                    className="flex min-h-12 cursor-pointer items-center gap-3 rounded-lg px-3 py-2 aria-selected:bg-ink aria-selected:text-canvas"
                   >
-                    <span>
+                    <Pictogram name={ICON[item.id] ?? "info"} className="size-5 shrink-0 opacity-80" />
+                    <span className="min-w-0 flex-1">
                       <span className="block font-semibold">{item.label}</span>
                       <span className="block text-sm opacity-70">{item.hint}</span>
                     </span>

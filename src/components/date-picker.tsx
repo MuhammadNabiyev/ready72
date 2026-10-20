@@ -52,7 +52,7 @@ export function DatePicker({
             align="start"
             sideOffset={6}
             collisionPadding={12}
-            className="z-[60] rounded-md border-2 border-ink bg-paper p-3 shadow-[0_18px_40px_-14px_oklch(0.2_0.02_255/0.45)]"
+            className="z-[60] rounded-xl border border-rule-strong bg-paper p-3 shadow-[var(--shadow-soft)]"
             style={{ animation: "pop 160ms var(--ease-out)" }}
           >
             <DayPicker
@@ -76,7 +76,7 @@ export function DatePicker({
         </Popover.Portal>
       </Popover.Root>
       {clearable && value && (
-        <button type="button" aria-label={`Clear ${label}`} onClick={() => onChange("")} className="grid size-11 place-items-center rounded border-2 border-transparent hover:border-ink">
+        <button type="button" aria-label={`Clear ${label}`} onClick={() => onChange("")} className="grid size-11 place-items-center rounded-lg border border-transparent hover:border-ink">
           <X className="size-4" aria-hidden />
         </button>
       )}
