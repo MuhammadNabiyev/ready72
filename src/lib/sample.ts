@@ -54,5 +54,6 @@ export function sampleState(today: Date): State {
     points: [{ id: "sample_m1", kind: "home", label: "Front yard by the oak tree", address: "" }],
     drills: [format(subDays(today, 200), "yyyy-MM-dd")],
     notes: "Gas shutoff is behind the garage. Neighbor on the left has a spare key.",
+    scenarios: [],
   };
 }

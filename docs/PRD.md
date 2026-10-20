@@ -63,6 +63,17 @@ If no household exists, any app page shows "Start with your household." with "Bu
 ### Crisis mode
 - Shows steps for the selected hazard, tap-to-dial contacts, meeting points, a go-bag checklist (tappable items get struck through), and the supply that runs out first.
 
+### Dashboard extras
+- **Time machine** (`data-testid="time-machine"`): a slider `tm-slider` from 0 to 336 hours in 6-hour steps, a clock `tm-clock` ("Day 1, 00:00"), a "Run the clock" button `tm-play` that advances time and turns into "Pause", and `tm-reset`. Water drains at the household's daily need, food at its daily kcal, medication/pet food/infant supplies at 1 day per 24 hours. A supply at zero shows "Gone". The headline `tm-headline` names the first supply that has run out ("Water ran out on day 4, 00:00.") or says "Everything is still holding."
+- **Share my score** opens a dialog with a canvas card, the post text, "Download image" and "Copy text".
+
+### Custom scenarios
+- On `/stress-test`, "Create your own scenario" opens a dialog: name (required, max 60), days 1-30, "Extreme heat (+25% water)", "Go-bag only", optional must-have items, contact and meeting-point requirements. The new scenario appears in the list with a delete button and is evaluated like the built-ins.
+
+### Command palette and theme
+- `Ctrl+K` (or `Cmd+K`) opens a palette: type to filter, arrow keys move, Enter runs, Escape closes. It lists pages and actions (log a drill, share card, copy share link, switch theme, load sample).
+- The moon/sun button `theme-toggle` switches night mode; the choice persists.
+
 ### Settings
 - Editing the household recalculates all targets. "Erase everything" and "Load the sample household" ask for confirmation in a dialog. Backup downloads JSON; restore accepts that JSON.
 

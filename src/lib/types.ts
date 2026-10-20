@@ -83,6 +83,23 @@ export type PointKind = "home" | "neighborhood" | "out-of-town";
 
 export type MeetingPoint = { id: string; kind: PointKind; label: string; address: string };
 
+export type Scenario = {
+  id: string;
+  name: string;
+  summary: string;
+  days: number;
+  /** multiply base water need (heat) */
+  waterMult: number;
+  /** only items flagged as go-bag count */
+  goBag: boolean;
+  /** requirement ids that must be fully met, when they apply to this household */
+  extras: string[];
+  needsContact: boolean;
+  needsOutsidePoint: boolean;
+  /** true for scenarios the user created */
+  custom?: boolean;
+};
+
 export type State = {
   profile: Profile | null;
   entries: Entry[];
@@ -91,6 +108,8 @@ export type State = {
   /** ISO dates of practised drills, newest first */
   drills: string[];
   notes: string;
+  /** scenarios created by the user */
+  scenarios: Scenario[];
 };
 
 export const EMPTY_STATE: State = {
@@ -100,4 +119,5 @@ export const EMPTY_STATE: State = {
   points: [],
   drills: [],
   notes: "",
+  scenarios: [],
 };

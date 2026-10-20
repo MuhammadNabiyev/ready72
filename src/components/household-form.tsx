@@ -109,7 +109,7 @@ export function HouseholdForm({
                   data-testid={`hazard-${h}`}
                   className="group flex min-h-20 items-start gap-3 rounded border-2 border-ink bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_0_var(--ink)] aria-pressed:bg-ink aria-pressed:text-canvas"
                 >
-                  <span aria-hidden className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-sm border-2 ${on ? "border-signal bg-signal text-ink" : "border-ink-soft"}`}>
+                  <span aria-hidden className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-sm border-2 ${on ? "border-signal bg-signal text-on-signal" : "border-ink-soft"}`}>
                     {on && <Check className="stamp size-3.5" strokeWidth={3} />}
                   </span>
                   <span>
@@ -142,7 +142,7 @@ export function HouseholdForm({
                 key={d.value}
                 value={String(d.value)}
                 data-testid={`days-${d.value}`}
-                className="rounded border-2 border-ink bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_0_var(--ink)] data-[state=checked]:bg-signal data-[state=checked]:shadow-[0_4px_0_var(--ink)]"
+                className="rounded border-2 border-ink bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_0_var(--ink)] data-[state=checked]:bg-signal data-[state=checked]:text-on-signal data-[state=checked]:shadow-[0_4px_0_var(--ink)]"
               >
                 <span className="block font-display text-2xl font-extrabold">{d.title}</span>
                 <span className="mt-1 block text-sm">{d.text}</span>
