@@ -13,12 +13,12 @@ function draw(canvas: HTMLCanvasElement, card: ShareCard) {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
   const root = getComputedStyle(document.documentElement);
-  const display = root.getPropertyValue("--font-archivo").trim() || "Arial, sans-serif";
-  const sans = root.getPropertyValue("--font-hanken").trim() || "Arial, sans-serif";
-  const mono = root.getPropertyValue("--font-plex-mono").trim() || "monospace";
-  const INK = "#221f1b";
-  const PAPER = "#f6f2e9";
-  const SIGNAL = "#e8741c";
+  const display = root.getPropertyValue("--font-newsreader").trim() || "Georgia, serif";
+  const sans = root.getPropertyValue("--font-atkinson").trim() || "Arial, sans-serif";
+  const mono = root.getPropertyValue("--font-dm-mono").trim() || "monospace";
+  const INK = "#14304a";
+  const PAPER = "#f1f6f8";
+  const SIGNAL = "#f2c200";
 
   ctx.fillStyle = PAPER;
   ctx.fillRect(0, 0, W, H);
@@ -38,21 +38,21 @@ function draw(canvas: HTMLCanvasElement, card: ShareCard) {
   ctx.fillStyle = SIGNAL;
   ctx.fill();
   ctx.fillStyle = INK;
-  ctx.font = `800 44px ${display}`;
+  ctx.font = `600 46px ${display}`;
   ctx.fillText("Ready", 132, 106);
   const w = ctx.measureText("Ready").width;
-  ctx.fillStyle = "#b5481a";
+  ctx.fillStyle = "#1f5fa8";
   ctx.fillText("72", 132 + w, 106);
 
-  ctx.fillStyle = "#5d574f";
+  ctx.fillStyle = "#4c6577";
   ctx.font = `500 26px ${mono}`;
   ctx.fillText(card.household.toUpperCase().slice(0, 40), 80, 190);
 
   ctx.fillStyle = INK;
-  ctx.font = `800 104px ${display}`;
+  ctx.font = `500 112px ${display}`;
   ctx.fillText("Ready for", 80, 300);
   const t = `${card.daysCovered}`;
-  ctx.fillStyle = "#b5481a";
+  ctx.fillStyle = "#1f5fa8";
   ctx.fillText(t, 80, 410);
   const tw = ctx.measureText(t).width;
   ctx.fillStyle = INK;
@@ -76,7 +76,7 @@ function draw(canvas: HTMLCanvasElement, card: ShareCard) {
       ctx.strokeStyle = INK;
       ctx.strokeRect(x, y, bw, h);
     } else {
-      ctx.fillStyle = "#d8d2c5";
+      ctx.fillStyle = "#d3dee5";
       ctx.fillRect(x, y, bw, h);
     }
   }
@@ -86,7 +86,7 @@ function draw(canvas: HTMLCanvasElement, card: ShareCard) {
   ctx.fillText(`Readiness ${card.score}/100 · ${card.level}`, 80, 575);
   ctx.textAlign = "right";
   ctx.font = `500 24px ${mono}`;
-  ctx.fillStyle = "#5d574f";
+  ctx.fillStyle = "#4c6577";
   ctx.fillText(`${window.location.host}`, W - 80, 575);
   ctx.textAlign = "left";
 }
@@ -125,7 +125,7 @@ export function ShareCardDialog({ onClose }: { onClose: () => void }) {
 
   return (
     <Modal open onOpenChange={(o) => !o && onClose()} title="Share your readiness" description="A card with your score, ready to post. It shows the household name, score and days covered, never your kit or contacts." testId="share-dialog" wide>
-      <canvas ref={ref} width={W} height={H} className="w-full rounded border-2 border-ink" data-testid="share-canvas" aria-label={`Readiness card: ${card.text}`} role="img" />
+      <canvas ref={ref} width={W} height={H} className="w-full rounded-xl border border-rule-strong" data-testid="share-canvas" aria-label={`Readiness card: ${card.text}`} role="img" />
       <p className="mt-4 text-ink-soft" data-testid="share-text">{card.text}</p>
       <div className="mt-5 flex flex-wrap gap-3">
         <button type="button" className="btn btn-primary" onClick={download} data-testid="share-download">

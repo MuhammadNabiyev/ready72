@@ -31,7 +31,7 @@ export function Modal({
         <Dialog.Content className="modal" data-testid={testId} data-wide={wide ? "true" : "false"}>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <Dialog.Title className="font-display text-2xl font-bold" style={{ fontVariationSettings: '"wdth" 112' }}>
+              <Dialog.Title className="font-display text-2xl font-bold">
                 {title}
               </Dialog.Title>
               <Dialog.Description className="mt-1 text-ink-soft">{description}</Dialog.Description>
@@ -109,7 +109,7 @@ export function Stepper({
   testId?: string;
 }) {
   return (
-    <div className="inline-flex items-center border-2 border-ink rounded bg-paper" role="group" aria-label={label}>
+    <div className="inline-flex items-center border border-rule-strong rounded-xl bg-paper" role="group" aria-label={label}>
       <button
         type="button"
         aria-label={`Decrease ${label}`}
@@ -169,7 +169,7 @@ export function Toaster() {
         <div
           key={t.id}
           data-testid="toast"
-          className="pointer-events-auto rounded border-2 border-ink bg-ink px-4 py-2.5 font-semibold text-canvas shadow-[0_10px_30px_-10px_oklch(0.2_0.02_255/0.6)]"
+          className="pointer-events-auto rounded-xl bg-ink px-4 py-2.5 font-semibold text-canvas shadow-[0_14px_34px_-14px_oklch(0.2_0.05_248/0.7)]"
           style={{ animation: "toast-in 260ms var(--ease-out) both" }}
         >
           {t.text}

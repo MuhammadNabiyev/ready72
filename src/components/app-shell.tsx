@@ -32,7 +32,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-dvh pb-24 md:pb-0">
-      <header className="no-print sticky top-0 z-40 border-b-2 border-ink bg-canvas/95 backdrop-blur-sm">
+      <header className="no-print sticky top-0 z-40 border-b border-rule-strong bg-canvas/95 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-4 sm:px-6">
           <Link href="/" aria-label="Ready72 home" className="shrink-0">
             <Logo />
@@ -64,7 +64,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               onClick={() => window.dispatchEvent(new Event(OPEN_PALETTE))}
               aria-label="Search pages and actions (Ctrl+K)"
               data-testid="open-palette"
-              className="mr-1 hidden min-h-10 items-center gap-2 whitespace-nowrap rounded border-2 border-rule-strong px-3 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink xl:inline-flex"
+              className="mr-1 hidden min-h-10 items-center gap-2 whitespace-nowrap rounded-lg border border-rule-strong px-3 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink xl:inline-flex"
             >
               <Search className="size-4" aria-hidden />
               Search
@@ -83,7 +83,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <Link
               href="/crisis"
               data-testid="nav-crisis"
-              className="mr-1 inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded border-2 border-ink bg-ink px-3 text-sm font-bold text-canvas transition-colors hover:bg-signal hover:text-on-signal"
+              className="mr-1 inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-lg bg-ink px-3 text-sm font-bold text-canvas transition-colors hover:bg-signal hover:text-on-signal"
             >
               <span aria-hidden className="relative grid size-2.5 place-items-center">
                 <span className="absolute size-2.5 rounded-full bg-signal" style={{ animation: "pulse-ring 1.8s ease-out infinite" }} />
@@ -111,7 +111,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <CommandPalette />
       {sharing && <ShareCardDialog onClose={() => setSharing(false)} />}
 
-      <nav aria-label="Main" className="no-print fixed inset-x-0 bottom-0 z-40 grid grid-cols-6 border-t-2 border-ink bg-canvas md:hidden">
+      <nav aria-label="Main" className="no-print fixed inset-x-0 bottom-0 z-40 grid grid-cols-6 border-t border-rule-strong bg-canvas md:hidden">
         {NAV.map((n) => {
           const active = path === n.href;
           const Icon = n.icon;

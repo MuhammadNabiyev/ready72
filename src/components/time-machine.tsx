@@ -61,7 +61,7 @@ export function TimeMachine({ state }: { state: State }) {
         What if help does not come? Move the clock and watch your supplies drain at your household’s pace.
       </p>
 
-      <div className="mt-6 rounded-md border-2 border-ink bg-paper p-5 sm:p-7">
+      <div className="mt-6 panel p-5 sm:p-7">
         <div className="flex flex-wrap items-center gap-4">
           <button type="button" className="btn btn-sm btn-primary" onClick={togglePlay} data-testid="tm-play" aria-pressed={playing}>
             {playing ? <Pause className="size-4" aria-hidden /> : <Play className="size-4" aria-hidden />}
@@ -71,7 +71,7 @@ export function TimeMachine({ state }: { state: State }) {
             <RotateCcw className="size-4" aria-hidden />
             Reset
           </button>
-          <p className="tnum ml-auto font-display text-3xl font-extrabold" style={{ fontVariationSettings: '"wdth" 112' }} data-testid="tm-clock" aria-live="off">
+          <p className="tnum ml-auto font-display text-3xl font-extrabold" data-testid="tm-clock" aria-live="off">
             {clock(hours)}
           </p>
         </div>
@@ -90,12 +90,12 @@ export function TimeMachine({ state }: { state: State }) {
             className="relative flex h-8 w-full touch-none select-none items-center"
             data-testid="tm-slider"
           >
-            <Slider.Track className="relative h-2 grow rounded-full border-[1.5px] border-ink bg-canvas-2">
-              <Slider.Range className="absolute h-full rounded-full bg-signal" />
+            <Slider.Track className="relative h-2 grow rounded-full border border-rule-strong bg-canvas-2">
+              <Slider.Range className="absolute h-full rounded-full bg-signal-deep" />
             </Slider.Track>
             <Slider.Thumb
               aria-label="Hours into the outage"
-              className="block size-7 rounded-full border-2 border-ink bg-signal shadow-[0_3px_0_var(--ink)] transition-transform hover:scale-110 focus-visible:scale-110"
+              className="block size-7 rounded-full border border-on-signal/70 bg-signal shadow-[0_3px_10px_-2px_oklch(0.4_0.1_90/0.6)] transition-transform hover:scale-110 focus-visible:scale-110"
             />
           </Slider.Root>
           {/* the target marker */}

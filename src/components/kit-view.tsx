@@ -46,7 +46,7 @@ export function KitView() {
         ))}
       </div>
 
-      <ul className="mt-8 divide-y-2 divide-ink border-y-2 border-ink" data-testid="kit-list">
+      <ul className="mt-8 divide-y divide-rule border-y border-rule-strong" data-testid="kit-list">
         {shown.map((p, i) => (
           <Row
             key={p.req.id}

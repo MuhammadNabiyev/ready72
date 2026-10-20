@@ -131,13 +131,13 @@ export function CommandPalette() {
       <Dialog.Portal>
         <Dialog.Overlay className="overlay" />
         <Dialog.Content
-          className="fixed top-[12vh] left-1/2 z-[55] w-[min(36rem,calc(100vw-1.5rem))] -translate-x-1/2 overflow-hidden rounded-lg border-2 border-ink bg-paper shadow-[0_24px_60px_-20px_oklch(0.2_0.02_255/0.5)]"
+          className="fixed top-[12vh] left-1/2 z-[55] w-[min(36rem,calc(100vw-1.5rem))] -translate-x-1/2 overflow-hidden rounded-2xl border border-rule-strong bg-paper shadow-[0_30px_70px_-24px_oklch(0.2_0.05_248/0.55)]"
           style={{ animation: "pop 180ms var(--ease-out)" }}
           data-testid="palette"
         >
           <Dialog.Title className="sr-only">Command palette</Dialog.Title>
           <Dialog.Description className="sr-only">Type to filter. Arrow keys move, Enter runs, Escape closes.</Dialog.Description>
-          <div className="flex items-center gap-3 border-b-2 border-ink px-4">
+          <div className="flex items-center gap-3 border-b border-rule-strong px-4">
             <Search className="size-5 shrink-0 text-ink-soft" aria-hidden />
             <input
               role="combobox"

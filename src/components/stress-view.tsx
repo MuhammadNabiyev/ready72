@@ -37,10 +37,10 @@ export function StressView() {
               <RadioGroup.Item
                 value={s.id}
                 data-testid={`scenario-${s.id}`}
-                className="w-full rounded border-2 border-ink bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_0_var(--ink)] data-[state=checked]:bg-ink data-[state=checked]:text-canvas"
+                className="w-full rounded-xl border border-rule-strong bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] data-[state=checked]:bg-ink data-[state=checked]:text-canvas"
               >
                 <span className="flex items-start justify-between gap-3">
-                  <span className="font-display text-xl font-bold leading-tight" style={{ fontVariationSettings: '"wdth" 110' }}>{s.name}</span>
+                  <span className="font-display text-xl font-bold leading-tight">{s.name}</span>
                   <span className={`tnum shrink-0 rounded-sm px-2 py-0.5 font-mono text-xs font-semibold ${r.passed ? "bg-ok-soft text-ok" : "bg-bad-soft text-bad"}`}>
                     {r.okCount}/{r.checks.length}
                   </span>
@@ -56,7 +56,7 @@ export function StressView() {
                     commit((st) => removeScenario(st, s.id));
                     toast("Scenario deleted");
                   }}
-                  className="absolute right-2 bottom-2 grid size-9 place-items-center rounded border-2 border-transparent text-bad hover:border-bad hover:bg-paper"
+                  className="absolute right-2 bottom-2 grid size-9 place-items-center rounded-lg border border-transparent text-bad hover:border-bad hover:bg-paper"
                 >
                   <Trash2 className="size-4" aria-hidden />
                 </button>
@@ -177,7 +177,7 @@ function Reveal({ scenario, checks, passed, okCount }: { scenario: Scenario; che
 
   return (
     <>
-      <ul className="mt-6 divide-y divide-rule border-y-2 border-ink" data-testid="checks">
+      <ul className="mt-6 divide-y divide-rule border-y border-rule-strong" data-testid="checks">
         {checks.slice(0, shown).map((c) => (
           <li key={c.id} className="reveal flex items-center gap-4 py-3" data-testid={`check-${c.id}`} data-ok={c.ok ? "true" : "false"}>
             <span className={`stamp grid size-8 shrink-0 place-items-center rounded-full ${c.ok ? "bg-ok text-paper" : "bg-bad text-paper"}`}>
@@ -191,11 +191,11 @@ function Reveal({ scenario, checks, passed, okCount }: { scenario: Scenario; che
 
       {done && (
         <div
-          className={`stamp mt-8 rounded border-2 p-5 ${passed ? "border-ok bg-ok-soft" : "border-bad bg-bad-soft"}`}
+          className={`stamp mt-8 rounded-xl border p-5 ${passed ? "border-ok bg-ok-soft" : "border-bad bg-bad-soft"}`}
           data-testid="verdict"
           data-passed={passed ? "true" : "false"}
         >
-          <p className={`font-display text-4xl font-extrabold ${passed ? "text-ok" : "text-bad"}`} style={{ fontVariationSettings: '"wdth" 118' }}>
+          <p className={`font-display text-4xl font-extrabold ${passed ? "text-ok" : "text-bad"}`}>
             {passed ? "Pass" : "Not yet"}
           </p>
           <p className="mt-1 text-lg">

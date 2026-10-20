@@ -66,7 +66,7 @@ export function HouseholdForm({
     <form onSubmit={submit} noValidate className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16" data-testid="household-form">
       <div className="space-y-12">
         <fieldset>
-          <legend className="text-3xl font-bold font-display" style={{ fontVariationSettings: '"wdth" 112' }}>Who lives with you?</legend>
+          <legend className="text-3xl font-bold font-display">Who lives with you?</legend>
           <div className="mt-5 max-w-sm">
             <Field label="Household name (optional)" htmlFor="hh-name">
               <input id="hh-name" className="input" value={p.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. The Alvarez family" data-testid="hh-name" maxLength={60} />
@@ -95,7 +95,7 @@ export function HouseholdForm({
         </fieldset>
 
         <fieldset>
-          <legend className="text-3xl font-bold font-display" style={{ fontVariationSettings: '"wdth" 112' }}>What could hit you?</legend>
+          <legend className="text-3xl font-bold font-display">What could hit you?</legend>
           <p className="mt-2 text-ink-soft">Pick every hazard that is realistic where you live. Each one adds its own gear.</p>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {HAZARD_IDS.map((h) => {
@@ -107,9 +107,9 @@ export function HouseholdForm({
                   aria-pressed={on}
                   onClick={() => toggleHazard(h)}
                   data-testid={`hazard-${h}`}
-                  className="group flex min-h-20 items-start gap-3 rounded border-2 border-ink bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_0_var(--ink)] aria-pressed:bg-ink aria-pressed:text-canvas"
+                  className="group flex min-h-20 items-start gap-3 rounded-xl border border-rule-strong bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] aria-pressed:bg-ink aria-pressed:text-canvas"
                 >
-                  <span aria-hidden className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-sm border-2 ${on ? "border-signal bg-signal text-on-signal" : "border-ink-soft"}`}>
+                  <span aria-hidden className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-md border-2 ${on ? "border-signal bg-signal text-on-signal" : "border-ink-soft"}`}>
                     {on && <Check className="stamp size-3.5" strokeWidth={3} />}
                   </span>
                   <span>
@@ -123,7 +123,7 @@ export function HouseholdForm({
         </fieldset>
 
         <fieldset>
-          <legend className="text-3xl font-bold font-display" style={{ fontVariationSettings: '"wdth" 112' }}>Anything we should plan around?</legend>
+          <legend className="text-3xl font-bold font-display">Anything we should plan around?</legend>
           <div className="mt-5 flex flex-wrap gap-3">
             <button type="button" className="chip" aria-pressed={p.meds} onClick={() => set("meds", !p.meds)} data-testid="need-meds">
               Someone takes daily medication
@@ -135,14 +135,14 @@ export function HouseholdForm({
         </fieldset>
 
         <fieldset>
-          <legend className="text-3xl font-bold font-display" style={{ fontVariationSettings: '"wdth" 112' }}>How long do you want to last?</legend>
+          <legend className="text-3xl font-bold font-display">How long do you want to last?</legend>
           <RadioGroup.Root value={String(p.days)} onValueChange={(v) => set("days", Number(v) as TargetDays)} aria-label="Target days" className="mt-5 grid gap-3 sm:grid-cols-3" data-testid="days-group">
             {DAYS.map((d) => (
               <RadioGroup.Item
                 key={d.value}
                 value={String(d.value)}
                 data-testid={`days-${d.value}`}
-                className="rounded border-2 border-ink bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_0_var(--ink)] data-[state=checked]:bg-signal data-[state=checked]:text-on-signal data-[state=checked]:shadow-[0_4px_0_var(--ink)]"
+                className="rounded-xl border border-rule-strong bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] data-[state=checked]:bg-signal data-[state=checked]:text-on-signal data-[state=checked]:shadow-[var(--shadow-soft)]"
               >
                 <span className="block font-display text-2xl font-extrabold">{d.title}</span>
                 <span className="mt-1 block text-sm">{d.text}</span>
@@ -157,7 +157,7 @@ export function HouseholdForm({
       </div>
 
       <aside className="lg:sticky lg:top-24 lg:self-start" aria-label="What this means">
-        <div className="rounded border-2 border-ink bg-paper p-5">
+        <div className="panel p-5">
           <p className="mono-label">Your {p.days}-day target</p>
           {preview ? (
             <dl className="mt-4 space-y-4" data-testid="preview">

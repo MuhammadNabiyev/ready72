@@ -1,23 +1,26 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Hanken_Grotesk, IBM_Plex_Mono } from "next/font/google";
+import { Atkinson_Hyperlegible_Next, DM_Mono, Newsreader } from "next/font/google";
 import { SwRegister } from "@/components/sw-register";
-import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import { Toaster } from "@/components/ui";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
-const display = Archivo({
-  variable: "--font-archivo",
+// Newsreader: an editorial serif with optical sizes, for the headlines.
+// Atkinson Hyperlegible Next: designed for legibility under stress, for everything else.
+const display = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
-  axes: ["wdth"],
+  axes: ["opsz"],
+  style: ["normal", "italic"],
 });
-const sans = Hanken_Grotesk({
-  variable: "--font-hanken",
+const sans = Atkinson_Hyperlegible_Next({
+  variable: "--font-atkinson",
   subsets: ["latin"],
 });
-const mono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
+const mono = DM_Mono({
+  variable: "--font-dm-mono",
   subsets: ["latin"],
-  weight: ["500", "600"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -27,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f6f2e9",
+  themeColor: "#eef3f5",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

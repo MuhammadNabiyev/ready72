@@ -31,8 +31,8 @@ export default function Home() {
       <main id="main">
         <section className="grid items-center gap-14 pb-24 pt-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:pt-20">
           <div>
-            <h1 className="rise text-[clamp(3rem,7vw,5.5rem)] leading-[0.95]">
-              Could your household last <span className="text-signal-deep">72 hours</span>?
+            <h1 className="rise text-[clamp(3.1rem,7.4vw,6rem)] leading-[0.96]">
+              Could your household last <em className="hl">72&nbsp;hours</em>?
             </h1>
             <p className="rise mt-7 max-w-[46ch] text-xl text-ink-soft" style={{ ["--d" as string]: 1 }}>
               When the power, water or roads go out, the first three days are on you. Ready72 tells you exactly what your household needs, what you are missing, and what to do about it.
@@ -47,12 +47,12 @@ export default function Home() {
           <SampleReadout />
         </section>
 
-        <section aria-labelledby="how-h" className="border-t-2 border-ink pt-14">
+        <section aria-labelledby="how-h" className="border-t border-rule-strong pt-14">
           <h2 id="how-h" className="text-4xl sm:text-5xl">Three steps. About a minute.</h2>
           <ol className="mt-10 grid gap-10 md:grid-cols-3">
             {STEPS.map((s, i) => (
               <li key={s.t} className="rise" style={{ ["--d" as string]: i }}>
-                <span className="tnum font-display text-6xl font-extrabold text-signal-deep">{i + 1}</span>
+                <span className="tnum font-display text-7xl font-normal italic text-signal-deep">{i + 1}</span>
                 <h3 className="mt-2 text-2xl">{s.t}</h3>
                 <p className="mt-2 text-ink-soft">{s.d}</p>
               </li>
@@ -60,20 +60,20 @@ export default function Home() {
           </ol>
         </section>
 
-        <section aria-labelledby="what-h" className="mt-24 border-t-2 border-ink pt-14">
+        <section aria-labelledby="what-h" className="mt-24 border-t border-rule-strong pt-14">
           <h2 id="what-h" className="text-4xl sm:text-5xl">What you get</h2>
           <dl className="mt-10 grid gap-x-16 md:grid-cols-2">
             {FEATURES.map((f) => (
               <div key={f.t} className="border-b border-rule py-6">
-                <dt className="font-display text-2xl font-bold" style={{ fontVariationSettings: '"wdth" 110' }}>{f.t}</dt>
+                <dt className="font-display text-2xl font-medium">{f.t}</dt>
                 <dd className="mt-1 text-ink-soft">{f.d}</dd>
               </div>
             ))}
           </dl>
         </section>
 
-        <section aria-labelledby="cta-h" className="mt-24 rounded-md bg-ink px-6 py-12 text-canvas sm:px-12">
-          <h2 id="cta-h" className="max-w-[20ch] text-4xl text-signal sm:text-6xl">Find your number before you need it.</h2>
+        <section aria-labelledby="cta-h" className="mt-24 rounded-3xl bg-ink px-6 py-12 text-canvas sm:px-12">
+          <h2 id="cta-h" className="max-w-[18ch] text-4xl text-canvas sm:text-6xl">Find your number <em className="text-signal">before</em> you need it.</h2>
           <Link href="/setup" className="btn btn-primary mt-8 min-h-14 px-7 text-lg" data-testid="cta-bottom">
             Build my plan
           </Link>

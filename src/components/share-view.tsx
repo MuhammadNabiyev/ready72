@@ -42,7 +42,7 @@ export function ShareView() {
             )}
 
             <h2 className="mt-12 text-3xl">Contacts</h2>
-            <ul className="mt-4 divide-y divide-rule border-y-2 border-ink">
+            <ul className="mt-4 divide-y divide-rule border-y border-rule-strong">
               {plan.contacts.length === 0 && <li className="py-3 text-ink-soft">None shared.</li>}
               {plan.contacts.map((c, i) => (
                 <li key={i} className="flex items-center gap-3 py-3">
@@ -56,7 +56,7 @@ export function ShareView() {
             </ul>
 
             <h2 className="mt-12 text-3xl">Meeting points</h2>
-            <ul className="mt-4 divide-y divide-rule border-y-2 border-ink">
+            <ul className="mt-4 divide-y divide-rule border-y border-rule-strong">
               {plan.points.length === 0 && <li className="py-3 text-ink-soft">None shared.</li>}
               {plan.points.map((m, i) => (
                 <li key={i} className="py-3">
@@ -73,7 +73,7 @@ export function ShareView() {
               </>
             )}
 
-            <div className="mt-16 border-t-2 border-ink pt-6">
+            <div className="mt-16 border-t border-rule-strong pt-6">
               <p className="text-lg">Want the same for your own household?</p>
               <Link href="/setup" className="btn btn-primary mt-4">Build my plan</Link>
             </div>

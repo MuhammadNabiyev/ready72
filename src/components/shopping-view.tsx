@@ -59,7 +59,7 @@ export function ShoppingView() {
       </PageTitle>
 
       {lines.length === 0 ? (
-        <div className="stamp mt-12 max-w-xl rounded border-2 border-ok bg-ok-soft p-6" data-testid="shop-empty">
+        <div className="stamp mt-12 max-w-xl rounded-xl border border-ok bg-ok-soft p-6" data-testid="shop-empty">
           <p className="font-display text-3xl font-bold text-ok">Fully stocked.</p>
           <p className="mt-2 text-lg">Your kit covers every item for {state.profile!.days} days. Check the expiry dates now and then.</p>
         </div>
@@ -81,7 +81,7 @@ export function ShoppingView() {
             <section className="mt-10" aria-labelledby="ess-h">
               <h2 id="ess-h" className="text-3xl">Essentials</h2>
               <p className="mt-1 text-ink-soft">The gaps that matter most in the first 72 hours.</p>
-              <ul className="mt-4 divide-y divide-rule border-y-2 border-ink" data-testid="shop-essentials">
+              <ul className="mt-4 divide-y divide-rule border-y border-rule-strong" data-testid="shop-essentials">
                 {essentials.map((l) => <Line key={l.req.id} l={l} />)}
               </ul>
             </section>
@@ -89,7 +89,7 @@ export function ShoppingView() {
           {rest.length > 0 && (
             <section className="mt-12" aria-labelledby="rest-h">
               <h2 id="rest-h" className="text-3xl">Everything else</h2>
-              <ul className="mt-4 divide-y divide-rule border-y-2 border-ink" data-testid="shop-rest">
+              <ul className="mt-4 divide-y divide-rule border-y border-rule-strong" data-testid="shop-rest">
                 {rest.map((l) => <Line key={l.req.id} l={l} />)}
               </ul>
             </section>

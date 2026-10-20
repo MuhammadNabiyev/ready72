@@ -63,7 +63,7 @@ export function SettingsView() {
         )}
       </section>
 
-      <section className="mt-20 border-t-2 border-ink pt-10" aria-labelledby="data-h">
+      <section className="mt-20 border-t border-rule-strong pt-10" aria-labelledby="data-h">
         <h2 id="data-h" className="text-3xl">Your data</h2>
         <p className="mt-2 max-w-[60ch] text-ink-soft">
           Ready72 stores everything in this browser only. There is no account and no server copy, so back up before you clear your browser data.

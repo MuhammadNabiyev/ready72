@@ -38,7 +38,7 @@ export function GuidesView() {
         <div className="mt-8 grid gap-10 md:grid-cols-3">
           {cols.map((c) => (
             <section key={c.key} aria-labelledby={`${c.key}-h`} data-testid={`guide-${c.key}`}>
-              <h3 id={`${c.key}-h`} className="border-b-2 border-ink pb-2 text-2xl">{c.title}</h3>
+              <h3 id={`${c.key}-h`} className="border-b border-rule-strong pb-2 text-2xl">{c.title}</h3>
               <ul className="mt-4 space-y-3">
                 {c.items.map((t) => (
                   <li key={t} className="flex gap-3">

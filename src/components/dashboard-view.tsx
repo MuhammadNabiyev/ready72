@@ -33,37 +33,30 @@ export function DashboardView() {
 
   return (
     <div>
-      <p className="mono-label rise">{profile.name}</p>
-      <h1 className="rise mt-2 text-[clamp(2.5rem,7vw,5rem)]" style={{ ["--d" as string]: 1 }} data-testid="headline">
-        {covered ? (
-          <>
-            Covered for the full <span className="tnum">{profile.days}</span> days.
-          </>
-        ) : (
-          <>
-            Ready for <span className="tnum text-signal-deep" data-testid="days-covered">{shownDays.toFixed(1)}</span> of{" "}
-            <span className="tnum">{profile.days}</span> days.
-          </>
-        )}
-      </h1>
-
-      <div className="rise mt-8" style={{ ["--d" as string]: 2 }}>
-        <div className="mb-3 flex items-baseline justify-between gap-4">
-          <p className="font-display text-xl font-bold" style={{ fontVariationSettings: '"wdth" 112' }}>
-            Readiness <span className="tnum" data-testid="score">{Math.round(shownScore)}</span>
-            <span className="text-ink-soft"> / 100</span>
-          </p>
-          <p className="rounded-sm border-2 border-ink px-2.5 py-0.5 text-sm font-bold" data-testid="level">
-            {r.level.label}
+      <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-16">
+        <div>
+          <p className="mono-label rise">{profile.name}</p>
+          <h1 className="rise mt-3 text-[clamp(2.75rem,6.4vw,5.25rem)]" style={{ ["--d" as string]: 1 }} data-testid="headline">
+            {covered ? (
+              <>
+                Covered for the full <span className="tnum hl">{profile.days}</span> days.
+              </>
+            ) : (
+              <>
+                Ready for <span className="tnum hl" data-testid="days-covered">{shownDays.toFixed(1)}</span> of{" "}
+                <span className="tnum">{profile.days}</span> days.
+              </>
+            )}
+          </h1>
+          <p className="rise mt-6 max-w-[44ch] text-lg text-ink-soft" style={{ ["--d" as string]: 3 }} data-testid="supplies-line">
+            Water lasts <strong className="tnum text-ink">{days.water}</strong> days and food lasts{" "}
+            <strong className="tnum text-ink">{days.food}</strong> days at your household’s pace. Your plan counts for <strong className="text-ink">{Math.round(shownScore)}</strong> of 100.
           </p>
         </div>
-        <ReadinessGauge score={r.score} />
+        <div className="rise panel px-5 pt-6 pb-5 sm:px-8" style={{ ["--d" as string]: 2 }}>
+          <ReadinessGauge score={r.score} level={r.level.label} />
+        </div>
       </div>
-
-      <p className="rise mt-5 text-ink-soft" style={{ ["--d" as string]: 3 }} data-testid="supplies-line">
-        Water lasts <strong className="tnum text-ink">{days.water}</strong> days and food lasts{" "}
-        <strong className="tnum text-ink">{days.food}</strong> days at your household’s pace.
-      </p>
 
       <section aria-labelledby="runway-h" className="rise mt-14" style={{ ["--d" as string]: 4 }}>
         <h2 id="runway-h" className="text-3xl">Supply runway</h2>
@@ -75,12 +68,12 @@ export function DashboardView() {
             return (
               <li key={l.id} className="grid grid-cols-[7.5rem_1fr_5.5rem] items-center gap-3 sm:grid-cols-[13rem_1fr_6.5rem]" data-testid={`runway-${l.id}`}>
                 <span className="truncate text-sm font-semibold sm:text-base">{l.label}</span>
-                <div className="relative h-5 border-[1.5px] border-ink bg-canvas-2" role="img" aria-label={`${l.label}: ${l.days} days of ${l.need} needed`}>
+                <div className="relative h-3 rounded-full bg-ink/10" role="img" aria-label={`${l.label}: ${l.days} days of ${l.need} needed`}>
                   <span
-                    className="absolute inset-y-0 left-0 origin-left"
-                    style={{ width: `${Math.max(1, frac * 100)}%`, background: met ? "var(--ok)" : l.days < 1 ? "var(--bad)" : "var(--signal)", animation: "grow 800ms var(--ease-out) both" }}
+                    className="absolute inset-y-0 left-0 origin-left rounded-full"
+                    style={{ width: `${Math.max(1, frac * 100)}%`, background: met ? "var(--ok)" : l.days < 1 ? "var(--bad)" : "var(--signal-deep)", animation: "grow 800ms var(--ease-out) both" }}
                   />
-                  <span aria-hidden className="absolute -inset-y-1.5 w-[3px] bg-ink" style={{ left: `calc(${(l.need / scale) * 100}% - 1.5px)` }} />
+                  <span aria-hidden className="absolute -inset-y-1.5 w-0.5 rounded-full bg-ink" style={{ left: `calc(${(l.need / scale) * 100}% - 1.5px)` }} />
                 </div>
                 <span className="tnum text-right font-mono text-xs leading-tight sm:text-sm" data-testid={`runway-days-${l.id}`}>
                   {l.days} / {l.need} d
@@ -106,7 +99,7 @@ export function DashboardView() {
             {actions.length === 0 ? (
               <p className="mt-4 text-lg" data-testid="no-actions">Nothing left to do. Keep it fresh and run a stress test.</p>
             ) : (
-              <ol className="mt-5 divide-y-2 divide-ink border-y-2 border-ink" data-testid="next-actions">
+              <ol className="mt-5 divide-y divide-rule border-y border-rule-strong" data-testid="next-actions">
                 {actions.map((a, i) => (
                   <li key={a.id}>
                     <Link href={a.href} className="row-hover group flex min-h-16 items-center gap-4 py-3" data-testid={`action-${a.id}`}>

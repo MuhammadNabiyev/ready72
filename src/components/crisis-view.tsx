@@ -24,7 +24,7 @@ export function CrisisView() {
   const packedCount = bag.filter((r) => haveFor(r, state.entries, today, true) >= r.need).length;
 
   return (
-    <div className="-mx-4 rounded-none bg-ink px-4 py-8 text-canvas sm:-mx-6 sm:rounded-lg sm:px-8 sm:py-10" data-testid="crisis">
+    <div className="-mx-4 rounded-none bg-ink px-4 py-8 text-canvas sm:-mx-6 sm:rounded-3xl sm:px-8 sm:py-10" data-testid="crisis">
       <h1 className="text-[clamp(2.5rem,7vw,4.5rem)] text-signal">Crisis mode</h1>
       <p className="mt-3 max-w-[55ch] text-xl text-canvas/80">Stay calm. Work down this page. Nothing here needs the internet.</p>
 
@@ -38,7 +38,7 @@ export function CrisisView() {
               aria-pressed={h === x}
               onClick={() => setH(x)}
               data-testid={`crisis-hazard-${x}`}
-              className="min-h-12 rounded border-2 border-canvas px-4 font-bold transition-colors hover:bg-canvas/15 aria-pressed:bg-signal aria-pressed:text-on-signal aria-pressed:border-signal"
+              className="min-h-12 rounded-lg border border-canvas/70 px-4 font-bold transition-colors hover:bg-canvas/15 aria-pressed:bg-signal aria-pressed:text-on-signal aria-pressed:border-signal"
             >
               {HAZARDS[x].label}
             </button>
@@ -66,7 +66,7 @@ export function CrisisView() {
           <ul className="mt-4 grid gap-3 sm:grid-cols-2" data-testid="crisis-contacts">
             {state.contacts.map((c) => (
               <li key={c.id}>
-                <a href={`tel:${c.phone.replace(/[^\d+]/g, "")}`} className="flex min-h-16 items-center gap-4 rounded border-2 border-canvas px-4 transition-colors hover:bg-canvas hover:text-ink">
+                <a href={`tel:${c.phone.replace(/[^\d+]/g, "")}`} className="flex min-h-16 items-center gap-4 rounded-xl border border-canvas/60 px-4 transition-colors hover:bg-canvas hover:text-ink">
                   <Phone className="size-6 shrink-0" aria-hidden />
                   <span>
                     <span className="block text-xl font-bold">{c.name}</span>
@@ -109,9 +109,9 @@ export function CrisisView() {
                   aria-pressed={on}
                   onClick={() => setGrabbed((g) => ({ ...g, [r.id]: !g[r.id] }))}
                   data-testid={`bag-${r.id}`}
-                  className="flex min-h-12 w-full items-center gap-3 rounded border-2 border-canvas/40 px-3 text-left transition-colors hover:border-canvas aria-pressed:border-signal aria-pressed:bg-signal/15"
+                  className="flex min-h-12 w-full items-center gap-3 rounded-lg border border-canvas/35 px-3 text-left transition-colors hover:border-canvas aria-pressed:border-signal aria-pressed:bg-signal/15"
                 >
-                  <span className={`grid size-6 shrink-0 place-items-center rounded-sm border-2 ${on ? "border-signal bg-signal text-on-signal" : "border-canvas/60"}`}>
+                  <span className={`grid size-6 shrink-0 place-items-center rounded-md border-2 ${on ? "border-signal bg-signal text-on-signal" : "border-canvas/60"}`}>
                     {on && <Check className="stamp size-4" strokeWidth={3} aria-hidden />}
                   </span>
                   <span className={`flex-1 ${on ? "line-through opacity-70" : ""}`}>{r.label}</span>

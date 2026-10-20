@@ -124,7 +124,7 @@ export function PlanView() {
           <section aria-labelledby="contacts-h">
             <h2 id="contacts-h" className="text-3xl">Emergency contacts</h2>
             <p className="mt-1 text-ink-soft">Keep one person who lives outside your area. Local lines jam first.</p>
-            <ul className="mt-5 divide-y divide-rule border-y-2 border-ink" data-testid="contacts">
+            <ul className="mt-5 divide-y divide-rule border-y border-rule-strong" data-testid="contacts">
               {state.contacts.length === 0 && <li className="py-4 text-ink-soft" data-testid="no-contacts">No contacts yet.</li>}
               {state.contacts.map((c) => (
                 <li key={c.id} className="reveal flex items-center gap-3 py-3" data-testid={`contact-${c.id}`}>
@@ -162,7 +162,7 @@ export function PlanView() {
           <section aria-labelledby="points-h">
             <h2 id="points-h" className="text-3xl">Meeting points</h2>
             <p className="mt-1 text-ink-soft">Where you meet if you cannot get home or cannot reach each other.</p>
-            <ul className="mt-5 divide-y divide-rule border-y-2 border-ink" data-testid="points">
+            <ul className="mt-5 divide-y divide-rule border-y border-rule-strong" data-testid="points">
               {state.points.length === 0 && <li className="py-4 text-ink-soft" data-testid="no-points">No meeting points yet.</li>}
               {state.points.map((m) => (
                 <li key={m.id} className="reveal flex items-center gap-3 py-3" data-testid={`point-${m.id}`}>
