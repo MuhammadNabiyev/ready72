@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { Download, RotateCcw, Trash2, Upload } from "lucide-react";
 import { setProfile } from "@/lib/actions";
@@ -40,15 +41,26 @@ export function SettingsView() {
 
       <section className="mt-12" aria-labelledby="hh-h">
         <h2 id="hh-h" className="mb-6 text-3xl">Household</h2>
-        <HouseholdForm
-          key={JSON.stringify(state.profile)}
-          initial={state.profile!}
-          submitLabel="Save changes"
-          onSubmit={(p) => {
-            commit((s) => setProfile(s, p));
-            toast("Household updated. Your targets were recalculated");
-          }}
-        />
+        {state.profile ? (
+          <HouseholdForm
+            key={JSON.stringify(state.profile)}
+            initial={state.profile}
+            submitLabel="Save changes"
+            onSubmit={(p) => {
+              commit((s) => setProfile(s, p));
+              toast("Household updated. Your targets were recalculated");
+            }}
+          />
+        ) : (
+          <div data-testid="settings-no-household">
+            <p className="max-w-[56ch] text-lg text-ink-soft">
+              No household yet. Build a plan, load the sample, or restore a backup below.
+            </p>
+            <Link href="/setup" className="btn btn-primary mt-4" data-testid="settings-build">
+              Build my plan
+            </Link>
+          </div>
+        )}
       </section>
 
       <section className="mt-20 border-t-2 border-ink pt-10" aria-labelledby="data-h">
