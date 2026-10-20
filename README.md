@@ -4,7 +4,7 @@
 
 Built for the TestSprite Season 4 hackathon.
 
-**Live:** https://ready72.vercel.app
+**Live:** https://ready72-weld.vercel.app
 
 ## The problem
 
