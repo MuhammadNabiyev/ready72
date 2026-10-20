@@ -71,7 +71,7 @@ export function DashboardView() {
             const frac = Math.min(1, l.days / scale);
             const met = l.days >= l.need;
             return (
-              <li key={l.id} className="grid grid-cols-[7.5rem_1fr_4.5rem] items-center gap-3 sm:grid-cols-[13rem_1fr_5rem]" data-testid={`runway-${l.id}`}>
+              <li key={l.id} className="grid grid-cols-[7.5rem_1fr_5.5rem] items-center gap-3 sm:grid-cols-[13rem_1fr_6.5rem]" data-testid={`runway-${l.id}`}>
                 <span className="truncate text-sm font-semibold sm:text-base">{l.label}</span>
                 <div className="relative h-5 border-[1.5px] border-ink bg-canvas-2" role="img" aria-label={`${l.label}: ${l.days} days of ${l.need} needed`}>
                   <span
@@ -80,12 +80,15 @@ export function DashboardView() {
                   />
                   <span aria-hidden className="absolute -inset-y-1.5 w-[3px] bg-ink" style={{ left: `calc(${(l.need / scale) * 100}% - 1.5px)` }} />
                 </div>
-                <span className="tnum text-right font-mono text-sm">{l.days} d</span>
+                <span className="tnum text-right font-mono text-xs leading-tight sm:text-sm" data-testid={`runway-days-${l.id}`}>
+                  {l.days} / {l.need} d
+                  <span className={`block font-sans text-xs font-semibold ${met ? "text-ok" : "text-bad"}`}>{met ? "Enough" : `Short ${Math.round((l.need - l.days) * 10) / 10} d`}</span>
+                </span>
               </li>
             );
           })}
         </ul>
-        <p className="mt-2 flex justify-between font-mono text-xs text-ink-soft sm:pl-[13.75rem] sm:pr-[5.75rem]" aria-hidden>
+        <p className="mt-2 flex justify-between font-mono text-xs text-ink-soft sm:pl-[13.75rem] sm:pr-[6.75rem]" aria-hidden>
           <span>0</span>
           <span>{Math.round(scale / 2)} days</span>
           <span>{scale}</span>

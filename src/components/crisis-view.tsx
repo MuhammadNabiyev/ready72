@@ -97,7 +97,7 @@ export function CrisisView() {
 
       <section className="mt-12" aria-labelledby="c-bag">
         <h2 id="c-bag" className="text-3xl">4. Grab the go-bag</h2>
-        <p className="mt-1 text-canvas/70" data-testid="crisis-bag-count">{packedCount} of {bag.length} items are packed in your go-bag.</p>
+        <p className="mt-1 text-canvas/70" data-testid="crisis-bag-count">{packedCount} of {bag.length} items are in your go-bag. Tap an item to mark it grabbed.</p>
         <ul className="mt-4 grid gap-2 sm:grid-cols-2" data-testid="crisis-bag">
           {bag.map((r) => {
             const packed = haveFor(r, state.entries, today, true) >= r.need;
@@ -115,7 +115,11 @@ export function CrisisView() {
                     {on && <Check className="stamp size-4" strokeWidth={3} aria-hidden />}
                   </span>
                   <span className={`flex-1 ${on ? "line-through opacity-70" : ""}`}>{r.label}</span>
-                  {!packed && <span className="mono-label rounded-sm bg-bad px-1.5 py-px text-paper">Not packed</span>}
+                  {on ? (
+                    <span className="mono-label rounded-sm bg-signal px-1.5 py-px text-ink" data-testid={`grabbed-${r.id}`}>Grabbed</span>
+                  ) : (
+                    !packed && <span className="mono-label rounded-sm bg-bad px-1.5 py-px text-paper">Not in go-bag</span>
+                  )}
                 </button>
               </li>
             );
