@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { HomeCtas, SampleReadout } from "@/components/landing-bits";
 import { Logo } from "@/components/logo";
-import { Pictogram, PictoTile, type PictogramName } from "@/components/pictogram";
+import { Pictogram, type PictogramName } from "@/components/pictogram";
 
 const STEPS = [
   { t: "Tell us who is at home", d: "Adults, children, infants, pets, and the hazards that are realistic where you live." },
@@ -34,9 +34,9 @@ export default function Home() {
       </header>
 
       <main id="main" className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
-        <section className="grid items-center gap-12 pt-14 pb-24 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:pt-20">
+        <section className="grid items-center gap-12 pt-14 pb-24 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:pt-20">
           <div>
-            <h1 className="rise text-[clamp(3rem,7.2vw,6.2rem)] leading-[0.94]">
+            <h1 className="rise text-[clamp(3rem,7vw,5.4rem)] leading-[0.95]">
               Could your household last <em className="hl">72&nbsp;hours</em>?
             </h1>
             <p className="rise mt-8 max-w-[46ch] text-xl text-ink-soft" style={{ ["--d" as string]: 1 }}>
@@ -56,9 +56,12 @@ export default function Home() {
           <h2 id="how-h" className="text-4xl sm:text-5xl">Three stops. About a minute.</h2>
           {/* a transit line: each step is a stop */}
           <ol className="relative mt-14 grid gap-12 md:grid-cols-3 md:gap-8">
-            <span aria-hidden className="absolute top-[1.1rem] right-[16%] left-[3%] hidden h-2 rounded-full bg-ink md:block" />
             {STEPS.map((s, i) => (
-              <li key={s.t} className="rise relative" style={{ ["--d" as string]: i }}>
+              <li
+                key={s.t}
+                className="rise relative md:not-last:after:absolute md:not-last:after:top-[1.125rem] md:not-last:after:left-[2.75rem] md:not-last:after:h-2 md:not-last:after:w-[calc(100%-0.75rem)] md:not-last:after:bg-ink md:not-last:after:content-['']"
+                style={{ ["--d" as string]: i }}
+              >
                 <span className="tnum relative grid size-11 place-items-center rounded-full border-[6px] border-ink bg-yellow text-lg font-black text-[oklch(0.25_0.03_170)]">{i + 1}</span>
                 <h3 className="mt-5 text-2xl">{s.t}</h3>
                 <p className="mt-2 max-w-[36ch] text-ink-soft">{s.d}</p>
@@ -69,13 +72,14 @@ export default function Home() {
 
         <section aria-labelledby="what-h" className="mt-28">
           <h2 id="what-h" className="text-4xl sm:text-5xl">What you get</h2>
-          <ul className="mt-10 grid gap-x-14 gap-y-9 md:grid-cols-2">
-            {FEATURES.map((f) => (
-              <li key={f.t} className="flex gap-5">
-                <PictoTile name={f.icon} className="size-14 rounded-2xl" />
+          {/* a wayfinding board: one dark sign, six lines, each with its own pictogram */}
+          <ul className="sign sign-black mt-10 grid px-6 py-4 shadow-[var(--shadow-soft)] sm:px-10 md:grid-cols-2 md:gap-x-14">
+            {FEATURES.map((f, i) => (
+              <li key={f.t} className={`board-row flex gap-5 py-6 ${i === 1 ? "md:border-t-0" : ""}`}>
+                <Pictogram name={f.icon} className="mt-1 size-10 shrink-0 text-yellow" />
                 <div>
                   <h3 className="text-2xl">{f.t}</h3>
-                  <p className="mt-1.5 max-w-[46ch] text-ink-soft">{f.d}</p>
+                  <p className="mt-1.5 max-w-[46ch] text-white/80">{f.d}</p>
                 </div>
               </li>
             ))}

@@ -1,4 +1,4 @@
-import type { Category } from "@/lib/types";
+import type { Category, HazardId } from "@/lib/types";
 
 /**
  * Solid safety-sign pictograms on a 48 x 48 grid. Each one is a silhouette with negative-space
@@ -40,6 +40,33 @@ const PATHS: Record<string, React.ReactNode> = {
   check: <path d="M6 25l6.500-6.500 7.500 7.500L36 9l6.500 6.500L20 40Z" />,
   cross: <path d="M10 15l5-5 9 9 9-9 5 5-9 9 9 9-5 5-9-9-9 9-5-5 9-9Z" />,
   info: <path fillRule="evenodd" d="M21 6h6v6h-6ZM17 18h10v18h4v6H17v-6h4V24h-4Z" />,
+  /* hazards */
+  quake: (
+    <>
+      <path fill="none" strokeWidth="5" strokeLinecap="round" d="M4 22h8l4-13 7 28 6-23 4 8h11" />
+      <path d="M4 41h40v4H4Z" />
+    </>
+  ),
+  flood: (
+    <>
+      <path d="M24 4 42 19h-6v10H12V19H6Z" />
+      <path fill="none" strokeWidth="4" strokeLinecap="round" d="M4 36q5-5 10 0t10 0 10 0 10 0M4 43q5-5 10 0t10 0 10 0 10 0" />
+    </>
+  ),
+  wildfire: <path fillRule="evenodd" d="M24 3c2 9 14 14 14 27a14 14 0 0 1-28 0c0-7 3-10 7-14 0 5 2 7 4 8-2-8-1-14 3-21ZM24 33a4.500 4.500 0 0 0-4.500 4.500c0 2.500 2 4 4.500 4s4.500-1.500 4.500-4A4.500 4.500 0 0 0 24 33Z" />,
+  winter: (
+    <>
+      <path fill="none" strokeWidth="4" strokeLinecap="round" d="M24 5v38M7.500 14.500l33 19M7.500 33.500l33-19M19 8l5 4 5-4M19 40l5-4 5 4" />
+      <circle cx="24" cy="24" r="5" />
+    </>
+  ),
+  heat: (
+    <>
+      <circle cx="24" cy="24" r="9" />
+      <path fill="none" strokeWidth="4" strokeLinecap="round" d="M24 4v7M24 37v7M4 24h7M37 24h7M9.900 9.900l5 5M33.100 33.100l5 5M9.900 38.100l5-5M33.100 14.900l5-5" />
+    </>
+  ),
+  outage: <path fillRule="evenodd" d="M24 3a14 14 0 0 0-8 25.600V34h16v-5.400A14 14 0 0 0 24 3ZM17 37h14v4.500H17ZM20 43.500h8V46h-8Z" />,
 };
 
 export type PictogramName = keyof typeof PATHS;
@@ -66,11 +93,27 @@ export const CATEGORY_PICTOGRAM: Record<Category | "plan", PictogramName> = {
   plan: "plan",
 };
 
-/** A black station-style tile with a white pictogram. */
-export function PictoTile({ name, className = "" }: { name: PictogramName; className?: string }) {
+export const HAZARD_PICTOGRAM: Record<HazardId, PictogramName> = {
+  earthquake: "quake",
+  flood: "flood",
+  wildfire: "wildfire",
+  winter: "winter",
+  heat: "heat",
+  outage: "outage",
+};
+
+const TILE_TONE = {
+  ink: "bg-ink text-canvas",
+  yellow: "bg-yellow text-[oklch(0.25_0.03_170)]",
+  green: "bg-green text-on-signal",
+  red: "bg-red text-on-signal",
+} as const;
+
+/** A station-style tile with a pictogram. Black by default, like a wayfinding sign. */
+export function PictoTile({ name, className = "", tone = "ink" }: { name: PictogramName; className?: string; tone?: keyof typeof TILE_TONE }) {
   return (
-    <span className={`grid size-11 shrink-0 place-items-center rounded-xl bg-ink text-canvas ${className}`}>
-      <Pictogram name={name} className="size-6" />
+    <span className={`grid size-11 shrink-0 place-items-center rounded-xl ${TILE_TONE[tone]} ${className}`}>
+      <Pictogram name={name} className="size-[58%]" />
     </span>
   );
 }

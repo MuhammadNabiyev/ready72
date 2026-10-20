@@ -1,4 +1,4 @@
-import { SCENARIOS, haveFor, readiness, runway, suppliesDays, uid } from "./engine";
+import { SCENARIOS, haveFor, inSentence, readiness, runway, suppliesDays, uid } from "./engine";
 import { baseDailyWater, buildRequirements, dailyKcal } from "./requirements";
 import type { Scenario, State } from "./types";
 
@@ -68,10 +68,10 @@ export function narrate(lines: TimelineLine[], hours: number): Narration {
     const first = gone[0];
     return {
       headline: `${first.label} ran out on ${when(first.endsAtHour as number)}.`,
-      detail: gone.length > 1 ? `${gone.length} supplies are gone by now.` : next ? `Next: ${next.label.toLowerCase()} runs out on ${when(next.endsAtHour as number)}.` : "Everything else is still holding.",
+      detail: gone.length > 1 ? `${gone.length} supplies are gone by now.` : next ? `Next: ${inSentence(next.label)} runs out on ${when(next.endsAtHour as number)}.` : "Everything else is still holding.",
     };
   }
-  if (next) return { headline: "Everything is still holding.", detail: `First to run out: ${next.label.toLowerCase()} on ${when(next.endsAtHour as number)}.` };
+  if (next) return { headline: "Everything is still holding.", detail: `First to run out: ${inSentence(next.label)} on ${when(next.endsAtHour as number)}.` };
   return { headline: "Everything is still holding.", detail: "No supply has a limit yet. Add some to your kit." };
 }
 
@@ -146,7 +146,7 @@ export function shareCard(state: State, today: Date): ShareCard {
   const short = runway(state, today)[0];
   const household = p?.name || "My household";
   const target = p?.days ?? 3;
-  const weakest = short ? short.label.toLowerCase() : null;
+  const weakest = short ? inSentence(short.label) : null;
   const text = `${household} can last ${d.overall} of ${target} days. Readiness ${r.score}/100 (${r.level.label}). ${
     weakest ? `The weak spot: ${weakest}. ` : ""
   }How long could yours? #Ready72`;

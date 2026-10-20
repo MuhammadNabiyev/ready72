@@ -63,7 +63,7 @@ export function SampleReadout() {
         <span>Sample household</span>
         <span>Illustration</span>
       </figcaption>
-      <p className="mt-5 text-[clamp(2.4rem,4.6vw,3.6rem)] leading-[0.98] font-black tracking-[-0.03em]">
+      <p className="mt-5 text-[clamp(2.3rem,3.8vw,3.3rem)] leading-[0.98] font-black tracking-[-0.03em]">
         Ready for <span className="tnum hl">{days.toFixed(1)}</span> of 3 days.
       </p>
       <ul className="mt-8 space-y-3.5" aria-hidden>

@@ -10,7 +10,7 @@ import { CATEGORY_ORDER, type Category, type Entry, type Requirement } from "@/l
 import { DatePicker, fmtDate } from "./date-picker";
 import { SupplyBar } from "./gauge";
 import { CATEGORY_PICTOGRAM, PictoTile } from "./pictogram";
-import { Field, Modal, PageTitle, SelectField, toast } from "./ui";
+import { Field, Modal, PageTitle, SelectField, Sep, toast } from "./ui";
 
 const qtyLabel = (r: Requirement) =>
   r.kind === "water" ? "Liters" : r.kind === "days" ? "Days of supply" : r.kind === "food" ? "How many units" : "Quantity";
@@ -32,22 +32,27 @@ export function KitView() {
       <PageTitle title="My kit">
         Everything your household needs, worked out from who lives with you. Add what you already own and watch the gaps close.
       </PageTitle>
-      <p className="mt-4 font-mono text-sm" data-testid="kit-summary">
-        {done} of {list.length} items complete
-      </p>
+      <div className="mt-5 flex max-w-md items-center gap-4">
+        <p className="shrink-0 font-bold tnum" data-testid="kit-summary">
+          {done} of {list.length} items complete
+        </p>
+        <div className="bar h-2.5 flex-1" data-state={done / Math.max(1, list.length) >= 0.75 ? "full" : done / Math.max(1, list.length) < 0.34 ? "empty" : "mid"} aria-hidden>
+          <span style={{ transform: `scaleX(${Math.max(0.02, done / Math.max(1, list.length))})` }} />
+        </div>
+      </div>
 
-      <div className="mt-6 flex flex-wrap gap-2" role="group" aria-label="Filter by category">
-        <button type="button" className="chip" aria-pressed={cat === "all"} onClick={() => setCat("all")} data-testid="cat-all">
+      <div className="-mx-4 mt-6 flex gap-2 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0" role="group" aria-label="Filter by category">
+        <button type="button" className="chip shrink-0" aria-pressed={cat === "all"} onClick={() => setCat("all")} data-testid="cat-all">
           All
         </button>
         {cats.map((c) => (
-          <button key={c} type="button" className="chip" aria-pressed={cat === c} onClick={() => setCat(c)} data-testid={`cat-${c}`}>
+          <button key={c} type="button" className="chip shrink-0" aria-pressed={cat === c} onClick={() => setCat(c)} data-testid={`cat-${c}`}>
             {CATEGORY_LABEL[c]}
           </button>
         ))}
       </div>
 
-      <ul className="mt-8 divide-y divide-rule border-y border-rule-strong" data-testid="kit-list">
+      <ul className="mt-8 divide-y divide-rule border-y-2 border-ink" data-testid="kit-list">
         {shown.map((p, i) => (
           <Row
             key={p.req.id}
@@ -100,13 +105,13 @@ function Row({
           <div className="flex flex-wrap items-center gap-2">
             <h2 className="text-xl">{req.label}</h2>
             {req.critical && <span className="mono-label rounded-sm border border-ink-soft px-1.5 py-px">Critical</span>}
-            <span className={`rounded-sm px-2 py-0.5 text-sm font-bold ${status.cls}`} data-testid={`status-${req.id}`}>
+            <span className={`rounded-md px-2 py-0.5 text-sm font-bold ${status.cls}`} data-testid={`status-${req.id}`}>
               {status.text}
             </span>
           </div>
           {req.hint && <p className="mt-1 max-w-[62ch] text-ink-soft">{req.hint}</p>}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 sm:w-[13.5rem] sm:justify-between">
           <button type="button" className="btn btn-sm" onClick={onAdd} data-testid={`add-${req.id}`} aria-label={`Add ${req.label}`}>
             <Plus className="size-4" aria-hidden />
             Add
@@ -129,7 +134,7 @@ function Row({
         <div className="w-full sm:flex-1">
           <SupplyBar fraction={p.fraction} label={`${req.label}: ${Math.round(p.fraction * 100)}%`} />
         </div>
-        <p className="tnum shrink-0 font-mono text-sm sm:w-60 sm:text-right" data-testid={`have-${req.id}`}>
+        <p className="tnum shrink-0 font-mono text-sm sm:w-[13.5rem] sm:text-right" data-testid={`have-${req.id}`}>
           {req.kind === "check" ? (complete ? "Have" : "Missing") : `${fmtAmount(req, p.have)} / ${fmtAmount(req, req.need)}`}
         </p>
       </div>
@@ -151,7 +156,7 @@ function Row({
                   <p className="text-sm text-ink-soft">
                     {req.kind === "check" ? "Have it" : req.kind === "food" ? `${e.qty} × ${e.kcalPerUnit?.toLocaleString("en-US")} kcal` : `${e.qty} ${req.unit}`}
                     {e.expiry && (
-                      <span className={expired ? "font-semibold text-bad" : ""}> · {expired ? "expired" : "expires"} {fmtDate(e.expiry)}</span>
+                      <span className={expired ? "font-semibold text-bad" : ""}><Sep />{expired ? "expired" : "expires"} {fmtDate(e.expiry)}</span>
                     )}
                   </p>
                 </div>
@@ -236,7 +241,7 @@ function EntryDialog({ req, onClose }: { req: Requirement; onClose: () => void }
   }
 
   return (
-    <Modal open onOpenChange={(o) => !o && onClose()} title={`Add: ${req.label}`} description={req.hint || "Record what you have so it counts toward your score."} testId="entry-dialog">
+    <Modal open onOpenChange={(o) => !o && onClose()} title={`Add: ${req.label}`} description={req.hint || "Record what you have so it counts toward your score."} testId="entry-dialog" icon={CATEGORY_PICTOGRAM[req.category]}>
       <form onSubmit={submit} noValidate className="space-y-5">
         {req.kind === "food" && (
           <Field label="Pick a staple" htmlFor="preset">
@@ -245,7 +250,7 @@ function EntryDialog({ req, onClose }: { req: Requirement; onClose: () => void }
               testId="preset"
               value={preset}
               onValueChange={pickPreset}
-              options={[{ value: "custom", label: "Custom food" }, ...FOOD_PRESETS.map((p) => ({ value: p.id, label: `${p.name} · ${p.kcal.toLocaleString("en-US")} kcal` }))]}
+              options={[{ value: "custom", label: "Custom food" }, ...FOOD_PRESETS.map((p) => ({ value: p.id, label: `${p.name} – ${p.kcal.toLocaleString("en-US")} kcal` }))]}
             />
           </Field>
         )}
@@ -255,17 +260,23 @@ function EntryDialog({ req, onClose }: { req: Requirement; onClose: () => void }
         {req.kind !== "check" && (
           <div className={req.kind === "food" ? "grid gap-4 sm:grid-cols-2" : ""}>
             <Field label={qtyLabel(req)} htmlFor="entry-qty" error={errors.qty}>
-              <input id="entry-qty" className="input tnum" inputMode="decimal" value={qty} onChange={(e) => setQty(e.target.value)} aria-invalid={!!errors.qty} data-testid="entry-qty" />
+              <div className="relative">
+                <input id="entry-qty" className="input tnum pr-16" inputMode="decimal" value={qty} onChange={(e) => setQty(e.target.value)} aria-invalid={!!errors.qty} data-testid="entry-qty" />
+                <span aria-hidden className="pointer-events-none absolute inset-y-0 right-3 grid place-items-center font-mono text-sm text-ink-soft">{req.kind === "food" ? "units" : req.unit}</span>
+              </div>
             </Field>
             {req.kind === "food" && (
               <Field label="kcal per unit" htmlFor="entry-kcal" error={errors.kcalPerUnit}>
-                <input id="entry-kcal" className="input tnum" inputMode="numeric" value={kcal} onChange={(e) => setKcal(e.target.value)} aria-invalid={!!errors.kcalPerUnit} data-testid="entry-kcal" />
+                <div className="relative">
+                  <input id="entry-kcal" className="input tnum pr-16" inputMode="numeric" value={kcal} onChange={(e) => setKcal(e.target.value)} aria-invalid={!!errors.kcalPerUnit} data-testid="entry-kcal" />
+                  <span aria-hidden className="pointer-events-none absolute inset-y-0 right-3 grid place-items-center font-mono text-sm text-ink-soft">kcal</span>
+                </div>
               </Field>
             )}
           </div>
         )}
         {preview && (
-          <p className="font-mono text-sm" data-testid="entry-preview">
+          <p className="inline-flex items-center gap-2 rounded-md bg-ok-soft px-2.5 py-1 font-mono text-sm font-bold text-ok" data-testid="entry-preview">
             {preview}
           </p>
         )}

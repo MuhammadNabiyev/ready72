@@ -40,7 +40,7 @@ export function SettingsView() {
       <PageTitle title="Settings">Change your household and manage your data. Everything lives in this browser.</PageTitle>
 
       <section className="mt-12" aria-labelledby="hh-h">
-        <h2 id="hh-h" className="mb-6 text-3xl">Household</h2>
+        <h2 id="hh-h" className="kicker mb-8">Household</h2>
         {state.profile ? (
           <HouseholdForm
             key={JSON.stringify(state.profile)}
@@ -63,40 +63,52 @@ export function SettingsView() {
         )}
       </section>
 
-      <section className="mt-20 border-t border-rule-strong pt-10" aria-labelledby="data-h">
-        <h2 id="data-h" className="text-3xl">Your data</h2>
-        <p className="mt-2 max-w-[60ch] text-ink-soft">
+      <section className="mt-20" aria-labelledby="data-h">
+        <h2 id="data-h" className="kicker">Your data</h2>
+        <p className="mt-5 max-w-[60ch] text-lg text-ink-soft">
           Ready72 stores everything in this browser only. There is no account and no server copy, so back up before you clear your browser data.
         </p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <button type="button" className="btn" onClick={exportJson} data-testid="export-json">
-            <Download className="size-4" aria-hidden />
-            Download backup
-          </button>
-          <button type="button" className="btn" onClick={() => fileRef.current?.click()} data-testid="import-json">
-            <Upload className="size-4" aria-hidden />
-            Restore backup
-          </button>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="application/json,.json"
-            className="sr-only"
-            aria-label="Backup file"
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              if (f) void importJson(f);
-              e.target.value = "";
-            }}
-          />
-          <button type="button" className="btn" onClick={() => setConfirm("sample")} data-testid="load-sample-settings">
-            <RotateCcw className="size-4" aria-hidden />
-            Load the sample household
-          </button>
-          <button type="button" className="btn btn-danger" onClick={() => setConfirm("reset")} data-testid="reset-all">
-            <Trash2 className="size-4" aria-hidden />
-            Erase everything
-          </button>
+        <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+          <div className="panel p-6">
+            <h3 className="text-xl">Back up and restore</h3>
+            <p className="mt-1 text-ink-soft">A JSON file you keep. Restoring replaces what is here.</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <button type="button" className="btn" onClick={exportJson} data-testid="export-json">
+                <Download className="size-4" aria-hidden />
+                Download backup
+              </button>
+              <button type="button" className="btn" onClick={() => fileRef.current?.click()} data-testid="import-json">
+                <Upload className="size-4" aria-hidden />
+                Restore backup
+              </button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="application/json,.json"
+                className="sr-only"
+                aria-label="Backup file"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) void importJson(f);
+                  e.target.value = "";
+                }}
+              />
+            </div>
+          </div>
+          <div className="panel border-bad/40 p-6">
+            <h3 className="text-xl">Start over</h3>
+            <p className="mt-1 text-ink-soft">Try the half-prepared sample family, or wipe this browser clean.</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <button type="button" className="btn" onClick={() => setConfirm("sample")} data-testid="load-sample-settings">
+                <RotateCcw className="size-4" aria-hidden />
+                Load the sample household
+              </button>
+              <button type="button" className="btn btn-danger" onClick={() => setConfirm("reset")} data-testid="reset-all">
+                <Trash2 className="size-4" aria-hidden />
+                Erase everything
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -107,6 +119,7 @@ export function SettingsView() {
           title={confirm === "reset" ? "Erase everything?" : "Replace your data with the sample?"}
           description={confirm === "reset" ? "Your household, kit, contacts, meeting points and drills will be deleted from this browser." : "Your current data will be replaced by a half-prepared sample family."}
           testId="confirm-dialog"
+          icon={confirm === "reset" ? "warning" : "docs"}
         >
           <div className="flex justify-end gap-3">
             <button type="button" className="btn btn-quiet" onClick={() => setConfirm(null)}>

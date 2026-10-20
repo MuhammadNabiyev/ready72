@@ -168,6 +168,11 @@ export const fmtAmount = (req: Pick<Requirement, "kind" | "unit">, n: number) =>
   }
 };
 
+/** Lowercases a label for mid-sentence use, but keeps acronyms and model names ("N95 masks", "LED lanterns") intact. */
+export function inSentence(label: string): string {
+  return label.replace(/^\S+/, (w) => (/[A-Z0-9]/.test(w.slice(1)) ? w : w.toLowerCase()));
+}
+
 export function gapText(req: Requirement, missing: number): string {
   switch (req.kind) {
     case "water":
@@ -175,11 +180,11 @@ export function gapText(req: Requirement, missing: number): string {
     case "food":
       return `Add ${missing.toLocaleString("en-US")} kcal of food (about ${Math.ceil(missing / 3600)} kg of rice)`;
     case "days":
-      return `Stock ${missing} more ${missing === 1 ? "day" : "days"} of ${req.label.toLowerCase()}`;
+      return `Stock ${missing} more ${missing === 1 ? "day" : "days"} of ${inSentence(req.label)}`;
     case "check":
-      return `Get: ${req.label.toLowerCase()}`;
+      return `Get: ${inSentence(req.label)}`;
     default:
-      return `Get ${missing} more: ${req.label.toLowerCase()}`;
+      return `Get ${missing} more: ${inSentence(req.label)}`;
   }
 }
 

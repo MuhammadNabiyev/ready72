@@ -68,7 +68,7 @@ export function DashboardView() {
             const met = l.days >= l.need;
             return (
               <li key={l.id} className="grid grid-cols-[7.5rem_1fr_5.5rem] items-center gap-3 sm:grid-cols-[13rem_1fr_6.5rem]" data-testid={`runway-${l.id}`}>
-                <span className="truncate text-sm font-semibold sm:text-base">{l.label}</span>
+                <span className="text-sm leading-tight font-semibold sm:text-base">{l.label}</span>
                 <div className="relative h-4 rounded-md bg-canvas-2 shadow-[inset_0_0_0_1px_var(--rule-strong)]" role="img" aria-label={`${l.label}: ${l.days} days of ${l.need} needed`}>
                   <span
                     className="absolute inset-y-0 left-0 origin-left rounded-[5px] shadow-[inset_0_-2px_0_oklch(0_0_0/0.14)]"
@@ -76,9 +76,9 @@ export function DashboardView() {
                   />
                   <span aria-hidden className="absolute -inset-y-1.5 w-[3px] bg-ink" style={{ left: `calc(${(l.need / scale) * 100}% - 1.5px)` }} />
                 </div>
-                <span className="tnum text-right font-mono text-xs leading-tight sm:text-sm" data-testid={`runway-days-${l.id}`}>
+                <span className="tnum text-right font-mono text-[0.8rem] leading-tight sm:text-sm" data-testid={`runway-days-${l.id}`}>
                   {l.days} / {l.need} d
-                  <span className={`block font-sans text-xs font-semibold ${met ? "text-ok" : "text-bad"}`}>{met ? "Enough" : `Short ${Math.round((l.need - l.days) * 10) / 10} d`}</span>
+                  <span className={`mt-0.5 block font-sans text-[0.8rem] font-bold ${met ? "text-ok" : "text-bad"}`}>{met ? "Enough" : `Short ${Math.round((l.need - l.days) * 10) / 10} d`}</span>
                 </span>
               </li>
             );
@@ -140,13 +140,13 @@ export function DashboardView() {
 
         <section aria-labelledby="cats-h" className="rise" style={{ ["--d" as string]: 5 }}>
           <h2 id="cats-h" className="text-3xl">Where you stand</h2>
-          <ul className="mt-5 space-y-4" data-testid="categories">
+          <ul className="mt-5 space-y-1.5" data-testid="categories">
             {r.parts.map((p) => {
               const pct = Math.round(p.fraction * 100);
               return (
                 <li key={p.key}>
                   <Link href={p.key === "plan" ? "/plan" : "/kit"} className="row-hover flex items-center gap-3 py-1" data-testid={`cat-${p.key}`}>
-                    <PictoTile name={CATEGORY_PICTOGRAM[p.key]} className="size-10 rounded-lg" />
+                    <PictoTile name={CATEGORY_PICTOGRAM[p.key]} className="size-9 rounded-lg" />
                     <div className="min-w-0 flex-1">
                       <div className="mb-1.5 flex items-baseline justify-between">
                         <span className="font-bold">{p.key === "plan" ? "Family plan" : CATEGORY_LABEL[p.key]}</span>

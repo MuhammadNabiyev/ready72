@@ -78,7 +78,7 @@ function draw(canvas: HTMLCanvasElement, card: ShareCard) {
 
   ctx.fillStyle = WHITE;
   ctx.font = `800 32px ${sans}`;
-  ctx.fillText(`Readiness ${card.score}/100 · ${card.level}`, 100, 540);
+  ctx.fillText(`Readiness ${card.score}/100  •  ${card.level}`, 100, 540);
   ctx.textAlign = "right";
   ctx.font = `500 22px ${mono}`;
   ctx.fillStyle = "rgba(255,255,255,0.82)";
@@ -119,7 +119,7 @@ export function ShareCardDialog({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <Modal open onOpenChange={(o) => !o && onClose()} title="Share your readiness" description="A card with your score, ready to post. It shows the household name, score and days covered, never your kit or contacts." testId="share-dialog" wide>
+    <Modal open onOpenChange={(o) => !o && onClose()} title="Share your readiness" description="A card with your score, ready to post. It shows the household name, score and days covered, never your kit or contacts." testId="share-dialog" wide icon="shield">
       <canvas ref={ref} width={W} height={H} className="w-full rounded-xl border border-rule-strong" data-testid="share-canvas" aria-label={`Readiness card: ${card.text}`} role="img" />
       <p className="mt-4 text-ink-soft" data-testid="share-text">{card.text}</p>
       <div className="mt-5 flex flex-wrap gap-3">

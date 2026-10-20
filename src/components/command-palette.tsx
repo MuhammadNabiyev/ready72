@@ -9,10 +9,28 @@ import { dayKey } from "@/lib/engine";
 import { encodeShare, toSharedPlan } from "@/lib/share";
 import { commit, getState, loadSample } from "@/lib/store";
 import { getTheme, toggleTheme } from "@/lib/theme";
+import { Pictogram, type PictogramName } from "./pictogram";
 import { toast } from "./ui";
 
 export const OPEN_PALETTE = "ready72:palette";
 export const OPEN_SHARE = "ready72:share";
+
+const ICON: Record<string, PictogramName> = {
+  "go-dashboard": "shield",
+  "go-kit": "bag",
+  "go-shopping": "food",
+  "go-plan": "plan",
+  "go-stress": "warning",
+  "go-guides": "info",
+  "go-crisis": "power",
+  "go-settings": "tools",
+  "go-home": "shield",
+  "do-drill": "check",
+  "do-share": "plan",
+  "do-link": "plan",
+  "do-theme": "time",
+  "do-sample": "docs",
+};
 
 type Item = { id: string; label: string; hint: string; group: "Go to" | "Do"; keywords?: string; run: () => void };
 
@@ -131,7 +149,7 @@ export function CommandPalette() {
       <Dialog.Portal>
         <Dialog.Overlay className="overlay" />
         <Dialog.Content
-          className="fixed top-[12vh] left-1/2 z-[55] w-[min(36rem,calc(100vw-1.5rem))] -translate-x-1/2 overflow-hidden rounded-2xl border border-rule-strong bg-paper shadow-[0_30px_70px_-24px_oklch(0.2_0.05_248/0.55)]"
+          className="fixed top-[12vh] left-1/2 z-[55] w-[min(36rem,calc(100vw-1.5rem))] -translate-x-1/2 overflow-hidden rounded-2xl border border-rule-strong bg-paper shadow-[0_30px_70px_-24px_oklch(0.2_0.03_170/0.6)]"
           style={{ animation: "pop 180ms var(--ease-out)" }}
           data-testid="palette"
         >
@@ -157,7 +175,7 @@ export function CommandPalette() {
               autoFocus
             />
           </div>
-          <ul id="palette-list" ref={listRef} role="listbox" aria-label="Results" className="max-h-[50vh] overflow-y-auto p-2" data-testid="palette-list">
+          <ul id="palette-list" ref={listRef} role="listbox" aria-label="Results" className="thin-scroll max-h-[50vh] overflow-y-auto p-2" data-testid="palette-list">
             {shown.length === 0 && (
               <li className="px-3 py-6 text-center text-ink-soft" data-testid="palette-empty">
                 Nothing matches “{query}”.
@@ -175,9 +193,10 @@ export function CommandPalette() {
                     data-testid={`palette-${item.id}`}
                     onMouseMove={() => setActive(i)}
                     onClick={() => choose(item)}
-                    className="flex min-h-12 cursor-pointer items-center justify-between gap-4 rounded px-3 py-2 aria-selected:bg-ink aria-selected:text-canvas"
+                    className="flex min-h-12 cursor-pointer items-center gap-3 rounded-lg px-3 py-2 aria-selected:bg-ink aria-selected:text-canvas"
                   >
-                    <span>
+                    <Pictogram name={ICON[item.id] ?? "info"} className="size-5 shrink-0 opacity-80" />
+                    <span className="min-w-0 flex-1">
                       <span className="block font-semibold">{item.label}</span>
                       <span className="block text-sm opacity-70">{item.hint}</span>
                     </span>

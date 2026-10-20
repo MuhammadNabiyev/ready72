@@ -65,7 +65,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               onClick={() => window.dispatchEvent(new Event(OPEN_PALETTE))}
               aria-label="Search pages and actions (Ctrl+K)"
               data-testid="open-palette"
-              className="mr-1 inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-lg border border-white/25 px-2.5 text-sm text-white/70 transition-colors hover:border-white hover:text-white 2xl:px-3"
+              className="mr-1 hidden min-h-10 items-center gap-2 whitespace-nowrap rounded-lg border border-white/25 px-2.5 text-sm text-white/70 transition-colors hover:border-white hover:text-white sm:inline-flex 2xl:px-3"
             >
               <Search className="size-4" aria-hidden />
               <span className="hidden 2xl:inline">Search</span>
@@ -84,13 +84,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <Link
               href="/crisis"
               data-testid="nav-crisis"
-              className="mr-1 inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-lg bg-red px-3.5 text-sm font-extrabold tracking-wide text-white uppercase transition-colors hover:brightness-110"
+              aria-label="Crisis mode"
+              className="mr-1 inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-lg bg-red px-3.5 text-sm font-extrabold tracking-wide text-on-signal uppercase transition-colors hover:brightness-110"
             >
               <span aria-hidden className="relative grid size-2.5 place-items-center">
-                <span className="absolute size-2.5 rounded-full bg-white" style={{ animation: "pulse-ring 1.8s ease-out infinite" }} />
-                <span className="size-2 rounded-full bg-white" />
+                <span className="absolute size-2.5 rounded-full bg-current" style={{ animation: "pulse-ring 1.8s ease-out infinite" }} />
+                <span className="size-2 rounded-full bg-current" />
               </span>
-              Crisis mode
+              <span className="sm:hidden">Crisis</span>
+              <span className="hidden sm:inline">Crisis mode</span>
             </Link>
             <Link href="/settings" aria-label="Settings" data-testid="nav-settings" className="grid size-11 place-items-center rounded-lg text-white/80 hover:bg-white/10 hover:text-white">
               <Settings className="size-5" aria-hidden />
@@ -112,7 +114,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <CommandPalette />
       {sharing && <ShareCardDialog onClose={() => setSharing(false)} />}
 
-      <nav aria-label="Main" className="no-print fixed inset-x-0 bottom-0 z-40 grid grid-cols-6 border-t border-rule-strong bg-canvas md:hidden">
+      <nav aria-label="Main" className="no-print fixed inset-x-0 bottom-0 z-40 grid grid-cols-6 border-t border-white/10 bg-sign-black pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_24px_-14px_oklch(0_0_0/0.5)] xl:hidden">
         {NAV.map((n) => {
           const active = path === n.href;
           return (
@@ -122,7 +124,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               aria-current={active ? "page" : undefined}
               aria-label={n.label}
               data-testid={`tab-${n.href.slice(1)}`}
-              className="relative flex min-h-16 flex-col items-center justify-center gap-0.5 text-[0.7rem] font-bold text-white/65 transition-colors aria-[current=page]:text-yellow aria-[current=page]:before:absolute aria-[current=page]:before:inset-x-3 aria-[current=page]:before:top-0 aria-[current=page]:before:h-[4px] aria-[current=page]:before:rounded-b-sm aria-[current=page]:before:bg-yellow"
+              className="relative flex min-h-16 flex-col items-center justify-center gap-0.5 text-[0.7rem] font-bold text-white/70 transition-colors active:bg-white/10 aria-[current=page]:text-yellow aria-[current=page]:before:absolute aria-[current=page]:before:inset-x-3 aria-[current=page]:before:top-0 aria-[current=page]:before:h-[4px] aria-[current=page]:before:rounded-b-sm aria-[current=page]:before:bg-yellow"
             >
               <Pictogram name={n.icon} className="size-6" />
               {n.short}

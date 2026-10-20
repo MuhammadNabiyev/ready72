@@ -6,7 +6,10 @@ import { Check } from "lucide-react";
 import { validateProfile } from "@/lib/actions";
 import { HAZARDS, buildRequirements, dailyKcal, dailyWater, people } from "@/lib/requirements";
 import { HAZARD_IDS, type HazardId, type Profile, type TargetDays } from "@/lib/types";
+import { HAZARD_PICTOGRAM, Pictogram } from "./pictogram";
 import { Field, Stepper } from "./ui";
+
+const LEGEND = "flex items-center gap-3 font-display text-2xl font-extrabold sm:text-3xl";
 
 export const DEFAULT_PROFILE: Profile = {
   name: "",
@@ -66,7 +69,7 @@ export function HouseholdForm({
     <form onSubmit={submit} noValidate className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16" data-testid="household-form">
       <div className="space-y-12">
         <fieldset>
-          <legend className="text-3xl font-bold font-display">Who lives with you?</legend>
+          <legend className={LEGEND}><span className="step-tag" aria-hidden>1</span>Who lives with you?</legend>
           <div className="mt-5 max-w-sm">
             <Field label="Household name (optional)" htmlFor="hh-name">
               <input id="hh-name" className="input" value={p.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. The Alvarez family" data-testid="hh-name" maxLength={60} />
@@ -95,8 +98,8 @@ export function HouseholdForm({
         </fieldset>
 
         <fieldset>
-          <legend className="text-3xl font-bold font-display">What could hit you?</legend>
-          <p className="mt-2 text-ink-soft">Pick every hazard that is realistic where you live. Each one adds its own gear.</p>
+          <legend className={LEGEND}><span className="step-tag" aria-hidden>2</span>What could hit you?</legend>
+          <p className="mt-2 text-ink-soft sm:pl-[3.1rem]">Pick every hazard that is realistic where you live. Each one adds its own gear.</p>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {HAZARD_IDS.map((h) => {
               const on = p.hazards.includes(h);
@@ -107,14 +110,17 @@ export function HouseholdForm({
                   aria-pressed={on}
                   onClick={() => toggleHazard(h)}
                   data-testid={`hazard-${h}`}
-                  className="group flex min-h-20 items-start gap-3 rounded-xl border border-rule-strong bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] aria-pressed:bg-ink aria-pressed:text-canvas"
+                  className="group relative flex min-h-24 items-start gap-4 rounded-xl border border-rule-strong bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-ink hover:shadow-[var(--shadow-soft)] aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-canvas"
                 >
-                  <span aria-hidden className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-md border-2 ${on ? "border-signal bg-signal text-on-signal" : "border-ink-soft"}`}>
-                    {on && <Check className="stamp size-3.5" strokeWidth={3} />}
+                  <span aria-hidden className={`grid size-12 shrink-0 place-items-center rounded-lg transition-colors duration-200 ${on ? "bg-yellow text-[oklch(0.25_0.03_170)]" : "bg-canvas-2 text-ink"}`}>
+                    <Pictogram name={HAZARD_PICTOGRAM[h]} className="size-7" />
                   </span>
-                  <span>
-                    <span className="block font-bold">{HAZARDS[h].label}</span>
+                  <span className="min-w-0 flex-1 pr-6">
+                    <span className="block text-lg font-bold">{HAZARDS[h].label}</span>
                     <span className={`block text-sm ${on ? "text-canvas/80" : "text-ink-soft"}`}>{HAZARDS[h].blurb}</span>
+                  </span>
+                  <span aria-hidden className={`absolute top-3 right-3 grid size-5 place-items-center rounded-md border-2 ${on ? "border-yellow bg-yellow text-[oklch(0.25_0.03_170)]" : "border-ink-soft"}`}>
+                    {on && <Check className="stamp size-3.5" strokeWidth={3.5} />}
                   </span>
                 </button>
               );
@@ -123,7 +129,7 @@ export function HouseholdForm({
         </fieldset>
 
         <fieldset>
-          <legend className="text-3xl font-bold font-display">Anything we should plan around?</legend>
+          <legend className={LEGEND}><span className="step-tag" aria-hidden>3</span>Anything we should plan around?</legend>
           <div className="mt-5 flex flex-wrap gap-3">
             <button type="button" className="chip" aria-pressed={p.meds} onClick={() => set("meds", !p.meds)} data-testid="need-meds">
               Someone takes daily medication
@@ -135,14 +141,14 @@ export function HouseholdForm({
         </fieldset>
 
         <fieldset>
-          <legend className="text-3xl font-bold font-display">How long do you want to last?</legend>
+          <legend className={LEGEND}><span className="step-tag" aria-hidden>4</span>How long do you want to last?</legend>
           <RadioGroup.Root value={String(p.days)} onValueChange={(v) => set("days", Number(v) as TargetDays)} aria-label="Target days" className="mt-5 grid gap-3 sm:grid-cols-3" data-testid="days-group">
             {DAYS.map((d) => (
               <RadioGroup.Item
                 key={d.value}
                 value={String(d.value)}
                 data-testid={`days-${d.value}`}
-                className="rounded-xl border border-rule-strong bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] data-[state=checked]:bg-signal data-[state=checked]:text-on-signal data-[state=checked]:shadow-[var(--shadow-soft)]"
+                className="rounded-xl border border-rule-strong bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-ink hover:shadow-[var(--shadow-soft)] data-[state=checked]:border-transparent data-[state=checked]:bg-signal data-[state=checked]:text-on-signal data-[state=checked]:shadow-[inset_0_-3px_0_oklch(0_0_0/0.2),var(--shadow-soft)]"
               >
                 <span className="block font-display text-2xl font-extrabold">{d.title}</span>
                 <span className="mt-1 block text-sm">{d.text}</span>
@@ -157,29 +163,29 @@ export function HouseholdForm({
       </div>
 
       <aside className="lg:sticky lg:top-24 lg:self-start" aria-label="What this means">
-        <div className="panel p-5">
-          <p className="mono-label">Your {p.days}-day target</p>
+        <div className="sign sign-green px-8 py-9 shadow-[var(--shadow-soft)]">
+          <p className="text-xs font-extrabold tracking-[0.16em] uppercase">Your {p.days}-day target</p>
           {preview ? (
-            <dl className="mt-4 space-y-4" data-testid="preview">
+            <dl className="mt-5 space-y-5" data-testid="preview">
               <div>
-                <dt className="text-sm text-ink-soft">Drinking water</dt>
-                <dd className="tnum font-display text-4xl font-extrabold" data-testid="preview-water">{preview.water} L</dd>
+                <dt className="flex items-center gap-2 text-sm font-bold"><Pictogram name="water" className="size-4" />Drinking water</dt>
+                <dd className="tnum font-display text-[2.5rem] leading-none font-black" data-testid="preview-water">{preview.water} L</dd>
               </div>
               <div>
-                <dt className="text-sm text-ink-soft">Food energy</dt>
-                <dd className="tnum font-display text-4xl font-extrabold" data-testid="preview-kcal">{preview.kcal.toLocaleString("en-US")} kcal</dd>
+                <dt className="flex items-center gap-2 text-sm font-bold"><Pictogram name="food" className="size-4" />Food energy</dt>
+                <dd className="tnum font-display text-[2.5rem] leading-none font-black" data-testid="preview-kcal">{preview.kcal.toLocaleString("en-US")}{" "}<span className="text-xl font-extrabold">kcal</span></dd>
               </div>
               <div>
-                <dt className="text-sm text-ink-soft">Checklist</dt>
-                <dd className="font-semibold" data-testid="preview-items">{preview.items} items, {preview.critical} critical</dd>
+                <dt className="flex items-center gap-2 text-sm font-bold"><Pictogram name="docs" className="size-4" />Checklist</dt>
+                <dd className="mt-1 text-lg font-bold" data-testid="preview-items">{preview.items} items, {preview.critical} critical</dd>
               </div>
-              <p className="border-t border-rule pt-3 text-sm text-ink-soft">
+              <p className="border-t-2 border-current/40 pt-4 text-sm font-semibold">
                 For {people(p)} {people(p) === 1 ? "person" : "people"}
                 {p.pets > 0 ? ` and ${p.pets} ${p.pets === 1 ? "pet" : "pets"}` : ""}. Updates as you change the form.
               </p>
             </dl>
           ) : (
-            <p className="mt-4 text-ink-soft">Fix the highlighted counts to see your target.</p>
+            <p className="mt-5 text-lg font-bold">Fix the highlighted counts to see your target.</p>
           )}
         </div>
       </aside>

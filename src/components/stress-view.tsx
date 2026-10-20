@@ -8,7 +8,7 @@ import { evaluateScenario, type Check as CheckResult, type Scenario } from "@/li
 import { addScenario, allScenarios, makeScenario, removeScenario, validateScenarioDraft, type ScenarioErrors } from "@/lib/features";
 import { buildRequirements } from "@/lib/requirements";
 import { commit, useApp } from "@/lib/store";
-import { StatusShape } from "./pictogram";
+import { Pictogram, StatusShape } from "./pictogram";
 import { Field, Modal, PageTitle, Stepper, toast } from "./ui";
 
 const prefersReduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -38,11 +38,12 @@ export function StressView() {
               <RadioGroup.Item
                 value={s.id}
                 data-testid={`scenario-${s.id}`}
-                className="w-full rounded-xl border border-rule-strong bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] data-[state=checked]:bg-ink data-[state=checked]:text-canvas"
+                className="w-full rounded-xl border border-rule-strong bg-paper p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-ink hover:shadow-[var(--shadow-soft)] data-[state=checked]:border-ink data-[state=checked]:bg-ink data-[state=checked]:text-canvas data-[state=checked]:shadow-[inset_5px_0_0_var(--yellow)]"
               >
                 <span className="flex items-start justify-between gap-3">
                   <span className="font-display text-xl font-bold leading-tight">{s.name}</span>
-                  <span className={`tnum shrink-0 rounded-sm px-2 py-0.5 font-mono text-xs font-semibold ${r.passed ? "bg-ok-soft text-ok" : "bg-bad-soft text-bad"}`}>
+                  <span className={`tnum inline-flex shrink-0 items-center gap-1.5 rounded-md px-2 py-0.5 font-mono text-xs font-bold ${r.passed ? "bg-ok-soft text-ok" : "bg-bad-soft text-bad"}`}>
+                    <span aria-hidden className={`size-2 ${r.passed ? "rounded-[2px] bg-ok" : "rounded-full bg-bad"}`} />
                     {r.okCount}/{r.checks.length}
                   </span>
                 </span>
@@ -122,7 +123,7 @@ function ScenarioDialog({ onClose, onCreate }: { onClose: () => void; onCreate: 
   }
 
   return (
-    <Modal open onOpenChange={(o) => !o && onClose()} title="Create your own scenario" description="Name it, set how long it lasts, and pick what you must have on hand. Ready72 will test your kit against it." testId="scenario-dialog" wide>
+    <Modal open onOpenChange={(o) => !o && onClose()} title="Create your own scenario" description="Name it, set how long it lasts, and pick what you must have on hand. Ready72 will test your kit against it." testId="scenario-dialog" wide icon="warning">
       <form onSubmit={submit} noValidate className="space-y-6">
         <Field label="Scenario name" htmlFor="sc-name" error={errors.name}>
           <input id="sc-name" className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Ice storm at the cabin" aria-invalid={!!errors.name} data-testid="sc-name" maxLength={80} autoFocus />
@@ -140,7 +141,7 @@ function ScenarioDialog({ onClose, onCreate }: { onClose: () => void; onCreate: 
         </div>
         <fieldset>
           <legend className="field-label">Must also have</legend>
-          <div className="mt-2 flex max-h-48 flex-wrap gap-2 overflow-y-auto pr-1" data-testid="sc-extras">
+          <div className="thin-scroll mt-2 flex max-h-48 flex-wrap gap-2 overflow-y-auto pr-1" data-testid="sc-extras">
             {reqs.map((r) => (
               <button key={r.id} type="button" className="chip min-h-9 text-sm" aria-pressed={extras.includes(r.id)} onClick={() => toggle(r.id)} data-testid={`sc-extra-${r.id}`}>
                 {r.label}
@@ -190,18 +191,25 @@ function Reveal({ scenario, checks, passed, okCount }: { scenario: Scenario; che
 
       {done && (
         <div
-          className={`stamp mt-8 rounded-xl border p-5 ${passed ? "border-ok bg-ok-soft" : "border-bad bg-bad-soft"}`}
+          className={`sign stamp mt-8 px-7 py-8 shadow-[var(--shadow-soft)] sm:px-9 ${passed ? "sign-green" : "sign-red"}`}
           data-testid="verdict"
           data-passed={passed ? "true" : "false"}
         >
-          <p className={`font-display text-4xl font-extrabold ${passed ? "text-ok" : "text-bad"}`}>
-            {passed ? "Pass" : "Not yet"}
-          </p>
-          <p className="mt-1 text-lg">
-            {passed ? "Your household can handle this scenario." : `${okCount} of ${total} checks passed. ${failed} to fix.`}
-          </p>
+          <div className="flex items-center gap-5">
+            <Pictogram name={passed ? "shield" : "warning"} className="size-14 shrink-0 sm:size-16" />
+            <div>
+              <p className="font-display text-4xl leading-none font-black sm:text-5xl">{passed ? "Pass" : "Not yet"}</p>
+              <p className="mt-2 text-lg font-semibold">
+                {passed ? "Your household can handle this scenario." : `${okCount} of ${total} checks passed. ${failed} to fix.`}
+              </p>
+            </div>
+          </div>
           {!passed && (
-            <Link href={scenario.goBag ? "/kit" : "/shopping"} className="btn btn-primary mt-4" data-testid="fix-link">
+            <Link
+              href={scenario.goBag ? "/kit" : "/shopping"}
+              className="btn mt-6 border-transparent bg-paper text-ink shadow-[inset_0_-3px_0_oklch(0_0_0/0.18)] hover:bg-paper hover:text-ink hover:brightness-95"
+              data-testid="fix-link"
+            >
               {scenario.goBag ? "Pack the go-bag in My kit" : "See what to buy"}
             </Link>
           )}
