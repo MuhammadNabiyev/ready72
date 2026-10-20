@@ -5,6 +5,7 @@ import { addPurchase } from "@/lib/actions";
 import { shoppingList, type ShoppingLine } from "@/lib/engine";
 import { CATEGORY_LABEL } from "@/lib/requirements";
 import { commit, useApp } from "@/lib/store";
+import { CATEGORY_PICTOGRAM, PictoTile } from "./pictogram";
 import { PageTitle, toast } from "./ui";
 
 function Line({ l }: { l: ShoppingLine }) {
@@ -12,6 +13,7 @@ function Line({ l }: { l: ShoppingLine }) {
   const beans = l.req.kind === "food" ? Math.ceil(l.missing / 340) : 0;
   return (
     <li className="row-hover flex flex-wrap items-center gap-x-4 gap-y-2 py-4" data-testid={`shop-${l.req.id}`}>
+      <PictoTile name={CATEGORY_PICTOGRAM[l.req.category]} className="size-11 rounded-xl" />
       <div className="min-w-0 flex-1 basis-64">
         <p className="text-lg font-semibold" data-testid={`shop-text-${l.req.id}`}>{l.text}</p>
         <p className="text-sm text-ink-soft">

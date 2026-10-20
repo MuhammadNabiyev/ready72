@@ -9,6 +9,7 @@ import { commit, useApp } from "@/lib/store";
 import { CATEGORY_ORDER, type Category, type Entry, type Requirement } from "@/lib/types";
 import { DatePicker, fmtDate } from "./date-picker";
 import { SupplyBar } from "./gauge";
+import { CATEGORY_PICTOGRAM, PictoTile } from "./pictogram";
 import { Field, Modal, PageTitle, SelectField, toast } from "./ui";
 
 const qtyLabel = (r: Requirement) =>
@@ -94,6 +95,7 @@ function Row({
   return (
     <li className="rise py-5" style={{ ["--d" as string]: Math.min(index, 8) }} data-testid={`req-${req.id}`} data-complete={complete ? "true" : "false"}>
       <div className="flex flex-wrap items-start gap-x-4 gap-y-3">
+        <PictoTile name={CATEGORY_PICTOGRAM[req.category]} className="size-12 rounded-xl" />
         <div className="min-w-0 flex-1 basis-64">
           <div className="flex flex-wrap items-center gap-2">
             <h2 className="text-xl">{req.label}</h2>

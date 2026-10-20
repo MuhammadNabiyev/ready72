@@ -32,13 +32,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div className="min-h-dvh pb-24 md:pb-0">
+    <div className="min-h-dvh pb-24 xl:pb-0">
       <header className="no-print sticky top-0 z-40 bg-sign-black text-white shadow-[0_6px_20px_-10px_oklch(0_0_0/0.5)]">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-4 sm:px-6">
+        <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6 xl:gap-6">
           <Link href="/" aria-label="Ready72 home" className="shrink-0">
             <Logo />
           </Link>
-          <nav aria-label="Main" className="ml-2 hidden flex-1 items-center gap-1 md:flex">
+          <nav aria-label="Main" className="ml-2 hidden flex-1 items-center gap-1 xl:flex">
             {NAV.map((n) => {
               const active = path === n.href;
               return (
@@ -59,17 +59,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               );
             })}
           </nav>
-          <div className="ml-auto flex items-center gap-1 md:ml-0">
+          <div className="ml-auto flex items-center gap-1">
             <button
               type="button"
               onClick={() => window.dispatchEvent(new Event(OPEN_PALETTE))}
               aria-label="Search pages and actions (Ctrl+K)"
               data-testid="open-palette"
-              className="mr-1 hidden min-h-10 items-center gap-2 whitespace-nowrap rounded-lg border border-white/25 px-3 text-sm text-white/70 transition-colors hover:border-white hover:text-white xl:inline-flex"
+              className="mr-1 inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-lg border border-white/25 px-2.5 text-sm text-white/70 transition-colors hover:border-white hover:text-white 2xl:px-3"
             >
               <Search className="size-4" aria-hidden />
-              Search
-              <kbd className="whitespace-nowrap rounded-sm border border-white/30 px-1.5 font-mono text-xs">Ctrl K</kbd>
+              <span className="hidden 2xl:inline">Search</span>
+              <kbd className="hidden whitespace-nowrap rounded-sm border border-white/30 px-1.5 font-mono text-xs 2xl:inline">Ctrl K</kbd>
             </button>
             <button
               type="button"
@@ -136,18 +136,31 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
 function NoHousehold() {
   return (
-    <div className="max-w-xl rise" data-testid="no-household">
-      <h1 className="text-5xl">Start with your household.</h1>
-      <p className="mt-4 text-lg text-ink-soft">
-        Ready72 needs to know who lives with you and which hazards you face before it can work out what you need.
-      </p>
-      <div className="mt-8 flex flex-wrap gap-3">
-        <Link href="/setup" className="btn btn-primary" data-testid="go-setup">
-          Build my plan
-        </Link>
-        <button type="button" className="btn" onClick={loadSample} data-testid="load-sample">
-          Try a sample household
-        </button>
+    <div className="grid items-center gap-12 py-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)]" data-testid="no-household">
+      <div className="rise">
+        <h1 className="text-[clamp(2.75rem,6vw,4.75rem)] leading-[0.96]">Start with your household.</h1>
+        <p className="mt-6 max-w-[46ch] text-xl text-ink-soft">
+          Ready72 needs to know who lives with you and which hazards you face before it can work out what you need. It takes about a minute.
+        </p>
+        <div className="mt-9 flex flex-wrap gap-3">
+          <Link href="/setup" className="btn btn-primary min-h-14 px-7 text-lg" data-testid="go-setup">
+            Build my plan
+          </Link>
+          <button type="button" className="btn min-h-14 px-6 text-lg" onClick={loadSample} data-testid="load-sample">
+            Try a sample household
+          </button>
+        </div>
+      </div>
+      <div className="sign sign-black flip px-8 pt-9 pb-10 text-center shadow-[var(--shadow-soft)]" aria-hidden>
+        <Pictogram name="shield" className="mx-auto size-20" />
+        <p className="mt-5 text-sm font-extrabold tracking-[0.16em] uppercase">Not set up yet</p>
+        <p className="mt-2 text-[clamp(4.5rem,9vw,6.5rem)] leading-[0.9] font-black tracking-[-0.04em]">--</p>
+        <p className="mt-1 text-lg font-bold">readiness score</p>
+        <div className="mx-auto mt-6 flex max-w-[16rem] gap-[3px]">
+          {Array.from({ length: 20 }, (_, i) => (
+            <span key={i} className="h-4 flex-1 rounded-[2px] bg-current opacity-20" />
+          ))}
+        </div>
       </div>
     </div>
   );
