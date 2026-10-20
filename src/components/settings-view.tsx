@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { Download, RotateCcw, Trash2, Upload } from "lucide-react";
 import { setProfile } from "@/lib/actions";
+import { mergeState } from "@/lib/migrate";
 import { commit, loadSample, resetAll, setState, useApp } from "@/lib/store";
-import { EMPTY_STATE, type State } from "@/lib/types";
+import type { State } from "@/lib/types";
 import { HouseholdForm } from "./household-form";
 import { Modal, PageTitle, toast } from "./ui";
 
@@ -28,7 +29,7 @@ export function SettingsView() {
     try {
       const data = JSON.parse(await file.text()) as Partial<State>;
       if (!data || typeof data !== "object" || !("profile" in data) || !Array.isArray(data.entries)) throw new Error("shape");
-      setState({ ...EMPTY_STATE, ...data } as State);
+      setState(mergeState(data));
       toast("Backup restored");
     } catch {
       toast("That file is not a Ready72 backup");

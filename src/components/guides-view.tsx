@@ -7,6 +7,7 @@ import { useApp } from "@/lib/store";
 import { HAZARD_IDS, type HazardId } from "@/lib/types";
 import { HAZARD_PICTOGRAM, Pictogram, type PictogramName } from "./pictogram";
 import { PageTitle } from "./ui";
+import { WaterTreatment } from "./water-treatment";
 
 export function GuidesView() {
   const state = useApp();
@@ -73,6 +74,8 @@ export function GuidesView() {
           })}
         </div>
       </div>
+
+      <WaterTreatment />
 
       <p className="mt-16 max-w-[70ch] border-t border-rule pt-4 text-sm text-ink-soft">{GUIDE_DISCLAIMER}</p>
     </div>

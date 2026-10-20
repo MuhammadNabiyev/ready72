@@ -39,6 +39,14 @@ const PATHS: Record<string, React.ReactNode> = {
   shield: <path fillRule="evenodd" d="M24 3 41 9.500V22c0 10.500-7.500 18.500-17 23C14.500 40.500 7 32.500 7 22V9.500ZM15.500 23l6 6 11-12.500-3.200-2.800-8 9.200-2.800-2.800Z" />,
   check: <path d="M6 25l6.500-6.500 7.500 7.500L36 9l6.500 6.500L20 40Z" />,
   cross: <path d="M10 15l5-5 9 9 9-9 5 5-9 9 9 9-5 5-9-9-9 9-5-5 9-9Z" />,
+  timer: <path fillRule="evenodd" d="M18 3h12v5.500H18ZM24 11a17 17 0 1 0 0.01 0ZM22 17.500h4v9l5.500 3.500-2 3.200-7.500-4.700Z" />,
+  calendar: (
+    <>
+      <path fillRule="evenodd" d="M7 9h34v34H7ZM12 21h24v17H12Z" />
+      <path d="M13 3h4.500v10H13ZM30.500 3H35v10h-4.500ZM17.500 29.500l4 4 8.500-9.500-2.800-2.400-5.800 6.600-1.200-1.300Z" />
+    </>
+  ),
+  card: <path fillRule="evenodd" d="M4 10h40v28H4ZM11 17h11v11H11ZM27 18h10v3H27ZM27 24h10v3H27ZM11 31h26v3H11Z" />,
   info: <path fillRule="evenodd" d="M21 6h6v6h-6ZM17 18h10v18h4v6H17v-6h4V24h-4Z" />,
   /* hazards */
   quake: (

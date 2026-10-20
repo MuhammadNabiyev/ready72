@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CornerDownLeft, Search } from "lucide-react";
 import { logDrill } from "@/lib/actions";
 import { dayKey } from "@/lib/engine";
+import { markDone } from "@/lib/maintenance";
 import { encodeShare, toSharedPlan } from "@/lib/share";
 import { commit, getState, loadSample } from "@/lib/store";
 import { getTheme, toggleTheme } from "@/lib/theme";
@@ -52,6 +53,11 @@ export function CommandPalette() {
       { id: "go-plan", label: "Family plan", hint: "Contacts, meeting points, drills", group: "Go to", keywords: "contacts meeting drill notes", run: go("/plan") },
       { id: "go-stress", label: "Stress test", hint: "Test your kit against a scenario", group: "Go to", keywords: "scenario evacuate outage", run: go("/stress-test") },
       { id: "go-guides", label: "Hazard guides", hint: "Before, during and after", group: "Go to", keywords: "earthquake flood wildfire", run: go("/guides") },
+      { id: "go-tools", label: "Tools", hint: "Drill, maintenance, emergency cards, water", group: "Go to", keywords: "extras", run: go("/tools") },
+      { id: "go-drill", label: "Evacuation drill", hint: "Timed 15-minute run with a checklist", group: "Go to", keywords: "practice evacuate timer countdown best time", run: go("/drill") },
+      { id: "go-maintenance", label: "Home maintenance", hint: "What is due: alarms, water, batteries", group: "Go to", keywords: "smoke alarm battery extinguisher recurring schedule", run: go("/maintenance") },
+      { id: "go-cards", label: "Emergency cards", hint: "Printable wallet cards", group: "Go to", keywords: "wallet blood type allergies medication print", run: go("/cards") },
+      { id: "go-water", label: "Make water safe", hint: "Boiling time and bleach drops", group: "Go to", keywords: "purify treat bleach boil drinking", run: go("/guides#water-h") },
       { id: "go-crisis", label: "Crisis mode", hint: "What to do right now", group: "Go to", keywords: "emergency help", run: go("/crisis") },
       { id: "go-settings", label: "Settings", hint: "Household, backup, erase", group: "Go to", keywords: "backup restore household", run: go("/settings") },
       { id: "go-home", label: "Home page", hint: "Back to the start", group: "Go to", run: go("/") },
@@ -64,6 +70,17 @@ export function CommandPalette() {
         run: () => {
           commit((s) => logDrill(s, dayKey(new Date())));
           toast("Drill logged. Nice work");
+        },
+      },
+      {
+        id: "do-smoke",
+        label: "Mark smoke alarms tested today",
+        hint: "Resets the monthly reminder",
+        group: "Do",
+        keywords: "maintenance check alarm",
+        run: () => {
+          commit((s) => markDone(s, "smoke", dayKey(new Date())));
+          toast("Smoke alarm test recorded. Next one in 30 days");
         },
       },
       { id: "do-share", label: "Share my readiness card", hint: "Image and text for posting", group: "Do", keywords: "tweet image png", run: () => window.dispatchEvent(new Event(OPEN_SHARE)) },

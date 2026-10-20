@@ -1,6 +1,6 @@
 /* Ready72 service worker: the app must open with no connection, because that is when it matters. */
 const CACHE = "ready72-v1";
-const PAGES = ["/", "/dashboard", "/kit", "/shopping", "/plan", "/stress-test", "/guides", "/crisis", "/setup", "/settings", "/share"];
+const PAGES = ["/", "/dashboard", "/kit", "/shopping", "/plan", "/stress-test", "/guides", "/tools", "/drill", "/maintenance", "/cards", "/crisis", "/setup", "/settings", "/share"];
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();

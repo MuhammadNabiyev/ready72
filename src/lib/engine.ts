@@ -1,4 +1,5 @@
 import { differenceInCalendarDays, format, parseISO, startOfDay } from "date-fns";
+import { maintenanceAlerts } from "./maintenance";
 import {
   CATEGORY_LABEL,
   CATEGORY_WEIGHT,
@@ -277,6 +278,8 @@ export function alerts(state: State, today: Date): Alert[] {
   if (state.contacts.length > 0 && !plan.hasOutOfArea) {
     out.push({ id: "no-out-of-area", severity: "info", text: "No out-of-town contact yet. Local lines jam first, so one helps", href: "/plan" });
   }
+
+  out.push(...maintenanceAlerts(state, today));
 
   const rank = { critical: 0, warn: 1, info: 2 } as const;
   return out.sort((a, b) => rank[a.severity] - rank[b.severity]);
