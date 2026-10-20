@@ -223,8 +223,8 @@ export function Sep() {
 /** A section heading with a pictogram tile, the way a sign names a room. */
 export function SectionHead({ icon, title, id, children }: { icon: PictogramName; title: string; id: string; children?: React.ReactNode }) {
   return (
-    <div className="flex items-start gap-4">
-      <PictoTile name={icon} className="mt-0.5 size-12 rounded-xl" />
+    <div className={`flex gap-4 ${children ? "items-start" : "items-center"}`}>
+      <PictoTile name={icon} className="size-12 rounded-xl" />
       <div className="min-w-0">
         <h2 id={id} className="text-3xl">{title}</h2>
         {children && <p className="mt-1.5 max-w-[52ch] text-ink-soft">{children}</p>}
