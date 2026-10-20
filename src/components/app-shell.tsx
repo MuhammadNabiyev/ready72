@@ -2,9 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Backpack, ClipboardList, LayoutDashboard, Settings, ShoppingCart, Siren } from "lucide-react";
+import { BookOpen, Backpack, ClipboardList, LayoutDashboard, Moon, Search, Settings, ShoppingCart, Siren, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
 import { loadSample, useApp } from "@/lib/store";
+import { toggleTheme, useTheme } from "@/lib/theme";
+import { CommandPalette, OPEN_PALETTE, OPEN_SHARE } from "./command-palette";
 import { Logo } from "./logo";
+import { ShareCardDialog } from "./share-card";
 
 const NAV = [
   { href: "/dashboard", label: "Dashboard", short: "Home", icon: LayoutDashboard },
@@ -18,6 +22,13 @@ const NAV = [
 export function AppShell({ children }: { children: React.ReactNode }) {
   const state = useApp();
   const path = usePathname();
+  const theme = useTheme();
+  const [sharing, setSharing] = useState(false);
+  useEffect(() => {
+    const open = () => setSharing(true);
+    window.addEventListener(OPEN_SHARE, open);
+    return () => window.removeEventListener(OPEN_SHARE, open);
+  }, []);
 
   return (
     <div className="min-h-dvh pb-24 md:pb-0">
@@ -35,7 +46,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   href={n.href}
                   aria-current={active ? "page" : undefined}
                   data-testid={`nav-${n.href.slice(1)}`}
-                  className="relative px-3 py-2 font-semibold transition-colors hover:text-signal-deep aria-[current=page]:text-ink"
+                  className="relative whitespace-nowrap px-3 py-2 font-semibold transition-colors hover:text-signal-deep aria-[current=page]:text-ink"
                 >
                   {n.label}
                   <span
@@ -48,10 +59,31 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             })}
           </nav>
           <div className="ml-auto flex items-center gap-1 md:ml-0">
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event(OPEN_PALETTE))}
+              aria-label="Search pages and actions (Ctrl+K)"
+              data-testid="open-palette"
+              className="mr-1 hidden min-h-10 items-center gap-2 whitespace-nowrap rounded border-2 border-rule-strong px-3 text-sm text-ink-soft transition-colors hover:border-ink hover:text-ink xl:inline-flex"
+            >
+              <Search className="size-4" aria-hidden />
+              Search
+              <kbd className="whitespace-nowrap rounded-sm border border-rule-strong px-1.5 font-mono text-xs">Ctrl K</kbd>
+            </button>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={theme === "night" ? "Switch to day mode" : "Switch to night mode"}
+              aria-pressed={theme === "night"}
+              data-testid="theme-toggle"
+              className="mr-1 grid size-10 place-items-center rounded hover:bg-canvas-2"
+            >
+              {theme === "night" ? <Sun className="size-5" aria-hidden /> : <Moon className="size-5" aria-hidden />}
+            </button>
             <Link
               href="/crisis"
               data-testid="nav-crisis"
-              className="mr-1 inline-flex min-h-10 items-center gap-2 rounded border-2 border-ink bg-ink px-3 text-sm font-bold text-canvas transition-colors hover:bg-signal hover:text-ink"
+              className="mr-1 inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded border-2 border-ink bg-ink px-3 text-sm font-bold text-canvas transition-colors hover:bg-signal hover:text-on-signal"
             >
               <span aria-hidden className="relative grid size-2.5 place-items-center">
                 <span className="absolute size-2.5 rounded-full bg-signal" style={{ animation: "pulse-ring 1.8s ease-out infinite" }} />
@@ -76,6 +108,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         )}
       </main>
 
+      <CommandPalette />
+      {sharing && <ShareCardDialog onClose={() => setSharing(false)} />}
+
       <nav aria-label="Main" className="no-print fixed inset-x-0 bottom-0 z-40 grid grid-cols-6 border-t-2 border-ink bg-canvas md:hidden">
         {NAV.map((n) => {
           const active = path === n.href;
@@ -87,7 +122,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               aria-current={active ? "page" : undefined}
               aria-label={n.label}
               data-testid={`tab-${n.href.slice(1)}`}
-              className="flex min-h-16 flex-col items-center justify-center gap-0.5 text-[0.7rem] font-semibold text-ink-soft transition-colors aria-[current=page]:bg-signal aria-[current=page]:text-ink"
+              className="flex min-h-16 flex-col items-center justify-center gap-0.5 text-[0.7rem] font-semibold text-ink-soft transition-colors aria-[current=page]:bg-signal aria-[current=page]:text-on-signal"
             >
               <Icon className="size-5" aria-hidden />
               {n.short}

@@ -7,7 +7,9 @@ import {
   dailyKcal,
   dailyWater,
 } from "./requirements";
-import { CATEGORY_ORDER, type Category, type Entry, type Requirement, type State } from "./types";
+import { CATEGORY_ORDER, type Category, type Entry, type Requirement, type Scenario, type State } from "./types";
+
+export type { Scenario };
 
 let seq = 0;
 export const uid = (p: string) => `${p}_${Date.now().toString(36)}${(seq++).toString(36)}${Math.random().toString(36).slice(2, 6)}`;
@@ -278,21 +280,6 @@ export function alerts(state: State, today: Date): Alert[] {
 /* ------------------------------------------------------------------ */
 /* scenarios (stress tests)                                            */
 /* ------------------------------------------------------------------ */
-
-export type Scenario = {
-  id: string;
-  name: string;
-  summary: string;
-  days: number;
-  /** multiply base water need (heat) */
-  waterMult: number;
-  /** only items flagged as go-bag count */
-  goBag: boolean;
-  /** requirement ids that must be fully met, when they apply to this household */
-  extras: string[];
-  needsContact: boolean;
-  needsOutsidePoint: boolean;
-};
 
 export const SCENARIOS: Scenario[] = [
   {

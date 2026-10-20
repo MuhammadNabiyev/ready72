@@ -28,7 +28,7 @@ export function GuidesView() {
         {ordered.map((x) => (
           <button key={x} type="button" className="chip" aria-pressed={h === x} onClick={() => setH(x)} data-testid={`guide-${x}`}>
             {HAZARDS[x].label}
-            {mine.includes(x) && <span className="mono-label rounded-sm bg-signal px-1.5 py-px text-ink">Yours</span>}
+            {mine.includes(x) && <span className="mono-label rounded-sm bg-signal px-1.5 py-px text-on-signal">Yours</span>}
           </button>
         ))}
       </div>

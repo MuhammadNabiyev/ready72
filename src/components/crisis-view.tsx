@@ -38,7 +38,7 @@ export function CrisisView() {
               aria-pressed={h === x}
               onClick={() => setH(x)}
               data-testid={`crisis-hazard-${x}`}
-              className="min-h-12 rounded border-2 border-canvas px-4 font-bold transition-colors hover:bg-canvas/15 aria-pressed:bg-signal aria-pressed:text-ink aria-pressed:border-signal"
+              className="min-h-12 rounded border-2 border-canvas px-4 font-bold transition-colors hover:bg-canvas/15 aria-pressed:bg-signal aria-pressed:text-on-signal aria-pressed:border-signal"
             >
               {HAZARDS[x].label}
             </button>
@@ -111,12 +111,12 @@ export function CrisisView() {
                   data-testid={`bag-${r.id}`}
                   className="flex min-h-12 w-full items-center gap-3 rounded border-2 border-canvas/40 px-3 text-left transition-colors hover:border-canvas aria-pressed:border-signal aria-pressed:bg-signal/15"
                 >
-                  <span className={`grid size-6 shrink-0 place-items-center rounded-sm border-2 ${on ? "border-signal bg-signal text-ink" : "border-canvas/60"}`}>
+                  <span className={`grid size-6 shrink-0 place-items-center rounded-sm border-2 ${on ? "border-signal bg-signal text-on-signal" : "border-canvas/60"}`}>
                     {on && <Check className="stamp size-4" strokeWidth={3} aria-hidden />}
                   </span>
                   <span className={`flex-1 ${on ? "line-through opacity-70" : ""}`}>{r.label}</span>
                   {on ? (
-                    <span className="mono-label rounded-sm bg-signal px-1.5 py-px text-ink" data-testid={`grabbed-${r.id}`}>Grabbed</span>
+                    <span className="mono-label rounded-sm bg-signal px-1.5 py-px text-on-signal" data-testid={`grabbed-${r.id}`}>Grabbed</span>
                   ) : (
                     !packed && <span className="mono-label rounded-sm bg-bad px-1.5 py-px text-paper">Not in go-bag</span>
                   )}

@@ -22,13 +22,18 @@ Authorities say to be able to survive on your own for at least 72 hours. Almost 
 | **Stress tests** | Shelter 3 days, week-long outage, evacuate in 15 minutes (go-bag only), heatwave + blackout, winter storm. Each check passes or fails with the exact shortfall. |
 | **Crisis mode** | One high-contrast screen: what to do now for your hazard, who to call (tap-to-dial), where to meet, a go-bag checklist. |
 | **Family plan** | Contacts, meeting points, drills (180-day cadence), notes. Print it, copy it, share a read-only link (plan only, never the kit), or export expiry reminders as an `.ics` calendar file. |
+| **Time machine** | Drag a clock from hour 0 to 14 days (or press "Run the clock") and watch water, food, medication and pet food drain at your pace, with a one-line story ("Water ran out on day 4, 00:00."). |
+| **Your own scenarios** | Create a stress test: name, 1-30 days, extreme heat, go-bag only, the items you must have, contact and meeting-point requirements. Saved locally. |
+| **Command palette** | `Ctrl/Cmd + K` jumps to any page or runs an action (log a drill, copy the share link, switch theme, share your card). |
+| **Night mode** | A full dark theme, remembered between visits, with no flash on load. |
+| **Share card** | A 1200x630 image of your score and days covered, plus ready-to-post text. It never includes your kit or contacts. |
 | **Offline PWA** | Service worker + web manifest; data lives in `localStorage`. Backup and restore as JSON. |
 
 ## How it is tested (and how that is wired into shipping)
 
 Ready72's value is in its numbers, so the numbers are tested twice, at two levels:
 
-1. **Unit tests for the preparedness engine** (`src/lib/*.test.ts`, 55 tests, Vitest). Pure functions, no DOM: requirement math, coverage and expiry, scoring weights, next actions, shopping list, alerts, scenario evaluation, runway, share-link round trip, calendar output, input validation.
+1. **Unit tests for the preparedness engine** (`src/lib/*.test.ts`, 66 tests, Vitest). Pure functions, no DOM: requirement math, coverage and expiry, scoring weights, next actions, shopping list, alerts, scenario evaluation, custom scenarios, the time-machine timeline and narration, share card text, runway, share-link round trip, calendar output, input validation.
 2. **End-to-end UI tests with [TestSprite](https://www.testsprite.com)** run against the deployed app on **every pull request** through the TestSprite GitHub App: household setup and live preview, kit entry dialogs (validation, presets, expiry picker), shopping list, plan forms, stress-test verdicts, crisis mode, settings (reset, restore).
 
 GitHub Actions (`.github/workflows/ci.yml`) also runs lint, type check, unit tests and the production build on every PR, so a change cannot reach TestSprite without passing the cheap checks first. Every important control has a stable `data-testid`.

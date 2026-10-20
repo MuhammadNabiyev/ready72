@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { AlertTriangle, ArrowRight, Info, OctagonAlert } from "lucide-react";
+import { AlertTriangle, ArrowRight, Info, OctagonAlert, Share2 } from "lucide-react";
 import { alerts, nextActions, readiness, runway, suppliesDays } from "@/lib/engine";
 import { CATEGORY_LABEL } from "@/lib/requirements";
 import { useApp } from "@/lib/store";
 import { ReadinessGauge, SupplyBar, useCountUp } from "./gauge";
+import { OPEN_SHARE } from "./command-palette";
+import { TimeMachine } from "./time-machine";
 
 const SEVERITY = {
   critical: { icon: OctagonAlert, cls: "text-bad", label: "Critical" },
@@ -95,6 +97,8 @@ export function DashboardView() {
         </p>
       </section>
 
+      <TimeMachine state={state} />
+
       <div className="mt-14 grid gap-12 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:gap-16">
         <div className="space-y-12">
           <section aria-labelledby="next-h" className="rise" style={{ ["--d" as string]: 4 }}>
@@ -159,10 +163,16 @@ export function DashboardView() {
               );
             })}
           </ul>
-          <Link href="/stress-test" className="btn btn-primary mt-8 w-full sm:w-auto" data-testid="to-stress">
-            Run a stress test
-            <ArrowRight className="size-4" aria-hidden />
-          </Link>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/stress-test" className="btn btn-primary w-full sm:w-auto" data-testid="to-stress">
+              Run a stress test
+              <ArrowRight className="size-4" aria-hidden />
+            </Link>
+            <button type="button" className="btn w-full sm:w-auto" onClick={() => window.dispatchEvent(new Event(OPEN_SHARE))} data-testid="share-score">
+              <Share2 className="size-4" aria-hidden />
+              Share my score
+            </button>
+          </div>
         </section>
       </div>
     </div>
