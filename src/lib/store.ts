@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { mergeState } from "./migrate";
 import { sampleState } from "./sample";
 import { EMPTY_STATE, type State } from "./types";
 
@@ -16,7 +17,7 @@ function read(): State {
     if (raw === null) return cacheRaw === null ? cacheValue : EMPTY_STATE;
     if (raw !== cacheRaw) {
       cacheRaw = raw;
-      cacheValue = { ...EMPTY_STATE, ...(JSON.parse(raw) as Partial<State>) };
+      cacheValue = mergeState(JSON.parse(raw));
     }
     return cacheValue;
   } catch {

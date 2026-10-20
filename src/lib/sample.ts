@@ -55,5 +55,8 @@ export function sampleState(today: Date): State {
     drills: [format(subDays(today, 200), "yyyy-MM-dd")],
     notes: "Gas shutoff is behind the garage. Neighbor on the left has a spare key.",
     scenarios: [],
+    members: [],
+    maintenance: { done: {}, custom: [] },
+    drillRuns: [],
   };
 }

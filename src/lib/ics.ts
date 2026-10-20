@@ -1,5 +1,6 @@
 import { addDays, format, parseISO } from "date-fns";
 import { DRILL_INTERVAL_DAYS, isUsable } from "./engine";
+import { calendarTasks } from "./maintenance";
 import type { State } from "./types";
 
 const esc = (s: string) => s.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
@@ -24,13 +25,14 @@ export function buildIcs(state: State, now: Date): string {
   const stamp = `${format(utc, "yyyyMMdd")}T${format(utc, "HHmmss")}Z`;
   const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Ready72//Preparedness reminders//EN", "CALSCALE:GREGORIAN"];
 
-  const event = (uid: string, day: Date, summary: string, description: string) => {
+  const event = (uid: string, day: Date, summary: string, description: string, repeatDays?: number) => {
     lines.push(
       "BEGIN:VEVENT",
       `UID:${uid}@ready72`,
       `DTSTAMP:${stamp}`,
       `DTSTART;VALUE=DATE:${dateOnly(day)}`,
       `DTEND;VALUE=DATE:${dateOnly(addDays(day, 1))}`,
+      ...(repeatDays ? [`RRULE:FREQ=DAILY;INTERVAL=${repeatDays}`] : []),
       `SUMMARY:${esc(summary)}`,
       `DESCRIPTION:${esc(description)}`,
       "BEGIN:VALARM",
@@ -49,6 +51,10 @@ export function buildIcs(state: State, now: Date): string {
   const last = state.drills[0];
   const nextDrill = last ? addDays(parseISO(last), DRILL_INTERVAL_DAYS) : addDays(now, 14);
   event("drill", nextDrill < now ? addDays(now, 7) : nextDrill, "Ready72: practise your emergency drill", "Walk through your plan and log the drill in Ready72.");
+
+  if (state.profile) {
+    for (const t of calendarTasks(state, now)) event(`maint-${t.id}`, t.start, `Ready72: ${t.label}`, t.why, t.everyDays);
+  }
 
   lines.push("END:VCALENDAR");
   return lines.map(fold).join("\r\n") + "\r\n";
