@@ -3,11 +3,12 @@
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Check, Plus, RotateCw, Trash2, X } from "lucide-react";
+import { Plus, RotateCw, Trash2 } from "lucide-react";
 import { evaluateScenario, type Check as CheckResult, type Scenario } from "@/lib/engine";
 import { addScenario, allScenarios, makeScenario, removeScenario, validateScenarioDraft, type ScenarioErrors } from "@/lib/features";
 import { buildRequirements } from "@/lib/requirements";
 import { commit, useApp } from "@/lib/store";
+import { StatusShape } from "./pictogram";
 import { Field, Modal, PageTitle, Stepper, toast } from "./ui";
 
 const prefersReduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -180,9 +181,7 @@ function Reveal({ scenario, checks, passed, okCount }: { scenario: Scenario; che
       <ul className="mt-6 divide-y divide-rule border-y border-rule-strong" data-testid="checks">
         {checks.slice(0, shown).map((c) => (
           <li key={c.id} className="reveal flex items-center gap-4 py-3" data-testid={`check-${c.id}`} data-ok={c.ok ? "true" : "false"}>
-            <span className={`stamp grid size-8 shrink-0 place-items-center rounded-full ${c.ok ? "bg-ok text-paper" : "bg-bad text-paper"}`}>
-              {c.ok ? <Check className="size-4" strokeWidth={3} aria-label="Pass" /> : <X className="size-4" strokeWidth={3} aria-label="Fail" />}
-            </span>
+            <span className="stamp"><StatusShape kind={c.ok ? "ok" : "bad"} className="size-8" label={c.ok ? "Pass" : "Fail"} /></span>
             <span className="flex-1 font-semibold">{c.label}</span>
             <span className="tnum text-right font-mono text-sm text-ink-soft">{c.detail}</span>
           </li>

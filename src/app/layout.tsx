@@ -1,26 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Atkinson_Hyperlegible_Next, DM_Mono, Newsreader } from "next/font/google";
+import { Overpass, Overpass_Mono } from "next/font/google";
 import { SwRegister } from "@/components/sw-register";
 import { Toaster } from "@/components/ui";
 import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
-// Newsreader: an editorial serif with optical sizes, for the headlines.
-// Atkinson Hyperlegible Next: designed for legibility under stress, for everything else.
-const display = Newsreader({
-  variable: "--font-newsreader",
-  subsets: ["latin"],
-  axes: ["opsz"],
-  style: ["normal", "italic"],
-});
-const sans = Atkinson_Hyperlegible_Next({
-  variable: "--font-atkinson",
+// Overpass descends from Highway Gothic, the typeface of road signs: built to be read at a glance, from a distance, in bad light.
+const sans = Overpass({
+  variable: "--font-overpass",
   subsets: ["latin"],
 });
-const mono = DM_Mono({
-  variable: "--font-dm-mono",
+const mono = Overpass_Mono({
+  variable: "--font-overpass-mono",
   subsets: ["latin"],
-  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -30,12 +22,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#eef3f5",
+  themeColor: "#f1f1ee",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>

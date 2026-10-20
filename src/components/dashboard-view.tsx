@@ -1,18 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { AlertTriangle, ArrowRight, Info, OctagonAlert, Share2 } from "lucide-react";
+import { ArrowRight, Share2 } from "lucide-react";
 import { alerts, nextActions, readiness, runway, suppliesDays } from "@/lib/engine";
 import { CATEGORY_LABEL } from "@/lib/requirements";
 import { useApp } from "@/lib/store";
 import { ReadinessGauge, SupplyBar, useCountUp } from "./gauge";
+import { CATEGORY_PICTOGRAM, PictoTile, StatusShape } from "./pictogram";
 import { OPEN_SHARE } from "./command-palette";
 import { TimeMachine } from "./time-machine";
 
 const SEVERITY = {
-  critical: { icon: OctagonAlert, cls: "text-bad", label: "Critical" },
-  warn: { icon: AlertTriangle, cls: "text-warn", label: "Soon" },
-  info: { icon: Info, cls: "text-ink-soft", label: "Note" },
+  critical: { shape: "bad", label: "Critical" },
+  warn: { shape: "warn", label: "Soon" },
+  info: { shape: "info", label: "Note" },
 } as const;
 
 export function DashboardView() {
@@ -53,7 +54,7 @@ export function DashboardView() {
             <strong className="tnum text-ink">{days.food}</strong> days at your household’s pace. Your plan counts for <strong className="text-ink">{Math.round(shownScore)}</strong> of 100.
           </p>
         </div>
-        <div className="rise panel px-5 pt-6 pb-5 sm:px-8" style={{ ["--d" as string]: 2 }}>
+        <div className="rise" style={{ ["--d" as string]: 2 }}>
           <ReadinessGauge score={r.score} level={r.level.label} />
         </div>
       </div>
@@ -68,12 +69,12 @@ export function DashboardView() {
             return (
               <li key={l.id} className="grid grid-cols-[7.5rem_1fr_5.5rem] items-center gap-3 sm:grid-cols-[13rem_1fr_6.5rem]" data-testid={`runway-${l.id}`}>
                 <span className="truncate text-sm font-semibold sm:text-base">{l.label}</span>
-                <div className="relative h-3 rounded-full bg-ink/10" role="img" aria-label={`${l.label}: ${l.days} days of ${l.need} needed`}>
+                <div className="relative h-4 rounded-md bg-canvas-2 shadow-[inset_0_0_0_1px_var(--rule-strong)]" role="img" aria-label={`${l.label}: ${l.days} days of ${l.need} needed`}>
                   <span
-                    className="absolute inset-y-0 left-0 origin-left rounded-full"
-                    style={{ width: `${Math.max(1, frac * 100)}%`, background: met ? "var(--ok)" : l.days < 1 ? "var(--bad)" : "var(--signal-deep)", animation: "grow 800ms var(--ease-out) both" }}
+                    className="absolute inset-y-0 left-0 origin-left rounded-[5px] shadow-[inset_0_0_0_1.5px_oklch(0.2_0.012_260/0.85)]"
+                    style={{ width: `${Math.max(1, frac * 100)}%`, background: met ? "var(--green)" : l.days < 1 ? "var(--red)" : "var(--yellow)", animation: "grow 800ms var(--ease-out) both" }}
                   />
-                  <span aria-hidden className="absolute -inset-y-1.5 w-0.5 rounded-full bg-ink" style={{ left: `calc(${(l.need / scale) * 100}% - 1.5px)` }} />
+                  <span aria-hidden className="absolute -inset-y-1.5 w-[3px] bg-ink" style={{ left: `calc(${(l.need / scale) * 100}% - 1.5px)` }} />
                 </div>
                 <span className="tnum text-right font-mono text-xs leading-tight sm:text-sm" data-testid={`runway-days-${l.id}`}>
                   {l.days} / {l.need} d
@@ -103,7 +104,7 @@ export function DashboardView() {
                 {actions.map((a, i) => (
                   <li key={a.id}>
                     <Link href={a.href} className="row-hover group flex min-h-16 items-center gap-4 py-3" data-testid={`action-${a.id}`}>
-                      <span className="tnum font-display text-3xl font-extrabold text-signal-deep">{i + 1}</span>
+                      <span className="tnum grid size-10 shrink-0 place-items-center rounded-full bg-ink font-display text-xl font-black text-canvas">{i + 1}</span>
                       <span className="flex-1 text-lg font-semibold">{a.text}</span>
                       <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" aria-hidden />
                     </Link>
@@ -121,11 +122,10 @@ export function DashboardView() {
               <ul className="mt-5 divide-y divide-rule border-y border-rule" data-testid="alerts">
                 {list.slice(0, 8).map((a) => {
                   const s = SEVERITY[a.severity];
-                  const Icon = s.icon;
                   return (
                     <li key={a.id}>
                       <Link href={a.href} className="row-hover flex min-h-14 items-center gap-3 py-2.5" data-testid="alert" data-severity={a.severity}>
-                        <Icon className={`size-5 shrink-0 ${s.cls}`} aria-hidden />
+                        <StatusShape kind={s.shape} className="size-7" />
                         <span className="sr-only">{s.label}:</span>
                         <span className="flex-1">{a.text}</span>
                       </Link>
@@ -145,12 +145,15 @@ export function DashboardView() {
               const pct = Math.round(p.fraction * 100);
               return (
                 <li key={p.key}>
-                  <Link href={p.key === "plan" ? "/plan" : "/kit"} className="row-hover block py-1" data-testid={`cat-${p.key}`}>
-                    <div className="mb-1.5 flex items-baseline justify-between">
-                      <span className="font-semibold">{p.key === "plan" ? "Family plan" : CATEGORY_LABEL[p.key]}</span>
-                      <span className="tnum font-mono text-sm">{pct}%</span>
+                  <Link href={p.key === "plan" ? "/plan" : "/kit"} className="row-hover flex items-center gap-3 py-1" data-testid={`cat-${p.key}`}>
+                    <PictoTile name={CATEGORY_PICTOGRAM[p.key]} className="size-10 rounded-lg" />
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-1.5 flex items-baseline justify-between">
+                        <span className="font-bold">{p.key === "plan" ? "Family plan" : CATEGORY_LABEL[p.key]}</span>
+                        <span className="tnum font-mono text-sm font-semibold">{pct}%</span>
+                      </div>
+                      <SupplyBar fraction={p.fraction} label={`${p.label} ${pct}%`} />
                     </div>
-                    <SupplyBar fraction={p.fraction} label={`${p.label} ${pct}%`} />
                   </Link>
                 </li>
               );
