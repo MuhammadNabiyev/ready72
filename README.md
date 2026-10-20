@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ready72
 
-## Getting Started
+**Could your household last 72 hours?** Ready72 turns "who lives in your home" and "which disasters you face" into an exact list of what to store, a readiness score, a shopping list, and stress tests like *"evacuate in 15 minutes"*. No account. Everything stays in your browser. It installs as an app and works offline, because that is when it matters.
 
-First, run the development server:
+Built for the TestSprite Season 4 hackathon.
+
+**Live:** https://ready72.vercel.app
+
+## The problem
+
+Authorities say to be able to survive on your own for at least 72 hours. Almost nobody knows what that means for *their* household: how many liters of water for two adults, a child and a dog? Is the first-aid kit enough? Which of the things in the cupboard have expired? Generic checklists do not answer that, so people guess, or do nothing.
+
+## What it does
+
+| | |
+|---|---|
+| **Personal checklist** | 30+ items worked out from adults, children, infants, pets, medication, mobility needs and the hazards you pick (earthquake, flood, wildfire, winter storm, heat, outage). 4 / 3 / 2 L of water a day per adult / child / infant, 1 L per pet, +25% in a heat risk area. 2000 / 1500 / 800 kcal of food. |
+| **Kit tracker** | Log water, food (with calories per unit and staple presets), gear, documents. Expired items stop counting. Flag items as *go-bag*. |
+| **Readiness score** | 0-100, weighted toward water and food, then power, medicine, documents and the family plan. Categories that do not apply to you are left out. |
+| **Supply runway** | Which supply runs out first, in days, against your target. |
+| **Next best actions + shopping list** | The steps that raise the score most; a list of only what is missing; "mark bought" moves it into the kit. |
+| **Stress tests** | Shelter 3 days, week-long outage, evacuate in 15 minutes (go-bag only), heatwave + blackout, winter storm. Each check passes or fails with the exact shortfall. |
+| **Crisis mode** | One high-contrast screen: what to do now for your hazard, who to call (tap-to-dial), where to meet, a go-bag checklist. |
+| **Family plan** | Contacts, meeting points, drills (180-day cadence), notes. Print it, copy it, share a read-only link (plan only, never the kit), or export expiry reminders as an `.ics` calendar file. |
+| **Offline PWA** | Service worker + web manifest; data lives in `localStorage`. Backup and restore as JSON. |
+
+## How it is tested (and how that is wired into shipping)
+
+Ready72's value is in its numbers, so the numbers are tested twice, at two levels:
+
+1. **Unit tests for the preparedness engine** (`src/lib/*.test.ts`, 55 tests, Vitest). Pure functions, no DOM: requirement math, coverage and expiry, scoring weights, next actions, shopping list, alerts, scenario evaluation, runway, share-link round trip, calendar output, input validation.
+2. **End-to-end UI tests with [TestSprite](https://www.testsprite.com)** run against the deployed app on **every pull request** through the TestSprite GitHub App: household setup and live preview, kit entry dialogs (validation, presets, expiry picker), shopping list, plan forms, stress-test verdicts, crisis mode, settings (reset, restore).
+
+GitHub Actions (`.github/workflows/ci.yml`) also runs lint, type check, unit tests and the production build on every PR, so a change cannot reach TestSprite without passing the cheap checks first. Every important control has a stable `data-testid`.
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
+npm test           # unit tests
+npm run lint && npm run typecheck && npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Stack: Next.js (App Router), Tailwind CSS 4, Radix UI (dialog, select, radio group, popover), react-day-picker, date-fns, Vitest. No backend, no tracking.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## A note on safety
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Ready72 gives general preparedness guidance based on public recommendations from civil-protection and health agencies. In an emergency, follow your local authorities and call your emergency number.
