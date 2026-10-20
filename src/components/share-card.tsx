@@ -16,12 +16,12 @@ function draw(canvas: HTMLCanvasElement, card: ShareCard) {
   const display = root.getPropertyValue("--font-overpass").trim() || "Arial, sans-serif";
   const sans = root.getPropertyValue("--font-overpass").trim() || "Arial, sans-serif";
   const mono = root.getPropertyValue("--font-overpass-mono").trim() || "monospace";
-  const INK = "#14181d";
-  const GREEN = "#0b7a4d";
-  const YELLOW = "#ffd51f";
+  const INK = "#1b2b27";
+  const GREEN = "#265a49";
+  const YELLOW = "#dcb24f";
   const WHITE = "#ffffff";
 
-  ctx.fillStyle = "#efefec";
+  ctx.fillStyle = "#f1efe8";
   ctx.fillRect(0, 0, W, H);
   // the sign: green plate, white keyline
   const rr = (x: number, y: number, w: number, h: number, r: number) => {

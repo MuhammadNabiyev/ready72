@@ -88,8 +88,8 @@ export function StatusShape({ kind, className = "size-7", label }: { kind: "ok" 
     return (
       <span {...common} className={`grid shrink-0 place-items-center text-yellow ${className}`}>
         <svg viewBox="0 0 48 48" className="size-full" strokeLinejoin="round" aria-hidden>
-          <path d="M24 5 45 41H3Z" fill="currentColor" stroke="oklch(0.2 0.012 260)" strokeWidth="4" />
-          <path d="M22.200 17h3.600l-.7 13h-2.200ZM22 33h4v4h-4Z" fill="oklch(0.2 0.012 260)" />
+          <path d="M24 5 45 41H3Z" fill="currentColor" stroke="oklch(0.25 0.03 170)" strokeWidth="4" />
+          <path d="M22.200 17h3.600l-.7 13h-2.200ZM22 33h4v4h-4Z" fill="oklch(0.25 0.03 170)" />
         </svg>
       </span>
     );

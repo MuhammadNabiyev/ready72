@@ -71,7 +71,7 @@ export function DashboardView() {
                 <span className="truncate text-sm font-semibold sm:text-base">{l.label}</span>
                 <div className="relative h-4 rounded-md bg-canvas-2 shadow-[inset_0_0_0_1px_var(--rule-strong)]" role="img" aria-label={`${l.label}: ${l.days} days of ${l.need} needed`}>
                   <span
-                    className="absolute inset-y-0 left-0 origin-left rounded-[5px] shadow-[inset_0_0_0_1.5px_oklch(0.2_0.012_260/0.85)]"
+                    className="absolute inset-y-0 left-0 origin-left rounded-[5px] shadow-[inset_0_-2px_0_oklch(0_0_0/0.14)]"
                     style={{ width: `${Math.max(1, frac * 100)}%`, background: met ? "var(--green)" : l.days < 1 ? "var(--red)" : "var(--yellow)", animation: "grow 800ms var(--ease-out) both" }}
                   />
                   <span aria-hidden className="absolute -inset-y-1.5 w-[3px] bg-ink" style={{ left: `calc(${(l.need / scale) * 100}% - 1.5px)` }} />

@@ -12,13 +12,13 @@ export async function GET(_req: Request, { params }: { params: Promise<{ size: s
   const s = size === "192" ? 192 : 512;
   return new ImageResponse(
     (
-      <div style={{ width: s, height: s, display: "flex", alignItems: "center", justifyContent: "center", background: "#14181d" }}>
+      <div style={{ width: s, height: s, display: "flex", alignItems: "center", justifyContent: "center", background: "#1b2b27" }}>
         <div
           style={{
             width: s * 0.78,
             height: s * 0.78,
             borderRadius: s * 0.18,
-            background: "#0b7a4d",
+            background: "#265a49",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

@@ -29,7 +29,7 @@ export function useCountUp(target: number, ms = 900) {
   return reduced ? target : value;
 }
 
-const tone = (score: number) => (score >= 70 ? "green" : score >= 35 ? "yellow" : "red");
+const tone = (score: number) => (score >= 50 ? "green" : score >= 25 ? "yellow" : "red");
 
 /** The readiness score as a safety sign: green is safe, yellow is caution, red is danger. */
 export function ReadinessGauge({ score, level }: { score: number; level?: string }) {

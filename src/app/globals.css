@@ -7,50 +7,52 @@
   panels with an inset keyline, one black bar across the top like a station.
 */
 :root {
-  --canvas: oklch(0.955 0.003 100);
-  --canvas-2: oklch(0.925 0.004 100);
-  --paper: oklch(0.997 0.002 100);
-  --ink: oklch(0.2 0.012 260);
-  --ink-soft: oklch(0.44 0.014 260);
-  --rule: oklch(0.885 0.005 100);
-  --rule-strong: oklch(0.72 0.008 100);
-  --green: oklch(0.5 0.125 158);
-  --yellow: oklch(0.885 0.175 95);
-  --blue: oklch(0.45 0.15 255);
-  --red: oklch(0.53 0.2 27);
+  --canvas: oklch(0.953 0.009 88);
+  --canvas-2: oklch(0.92 0.011 88);
+  --paper: oklch(0.986 0.005 88);
+  --ink: oklch(0.26 0.03 170);
+  --ink-soft: oklch(0.46 0.025 170);
+  --rule: oklch(0.875 0.01 88);
+  --rule-strong: oklch(0.73 0.015 88);
+  --green: oklch(0.42 0.085 165);
+  --yellow: oklch(0.8 0.115 82);
+  --tag: oklch(0.88 0.095 86);
+  --blue: oklch(0.45 0.075 235);
+  --red: oklch(0.5 0.15 32);
   --signal: var(--green);
   --signal-deep: var(--blue);
-  --on-signal: oklch(0.99 0.003 100);
-  --black: oklch(0.2 0.012 260);
+  --on-signal: oklch(0.97 0.012 90);
+  --black: oklch(0.25 0.035 170);
   --ok: var(--green);
-  --ok-soft: oklch(0.93 0.045 158);
-  --warn: oklch(0.45 0.1 75);
-  --warn-soft: oklch(0.955 0.08 95);
+  --ok-soft: oklch(0.93 0.035 165);
+  --warn: oklch(0.47 0.09 72);
+  --warn-soft: oklch(0.95 0.05 88);
   --bad: var(--red);
-  --bad-soft: oklch(0.94 0.035 27);
+  --bad-soft: oklch(0.94 0.03 32);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --shadow-soft: 0 1px 2px oklch(0.2 0.012 260 / 0.07), 0 12px 28px -16px oklch(0.2 0.012 260 / 0.25);
+  --shadow-soft: 0 1px 2px oklch(0.26 0.03 170 / 0.07), 0 12px 28px -16px oklch(0.26 0.03 170 / 0.25);
 }
 
 html[data-theme="night"] {
   color-scheme: dark;
-  --black: oklch(0.1 0.006 260);
-  --canvas: oklch(0.175 0.008 260);
-  --canvas-2: oklch(0.235 0.01 260);
-  --paper: oklch(0.215 0.009 260);
-  --ink: oklch(0.96 0.004 100);
-  --ink-soft: oklch(0.78 0.008 100);
-  --rule: oklch(0.32 0.01 260);
-  --rule-strong: oklch(0.5 0.012 260);
-  --green: oklch(0.68 0.15 158);
-  --yellow: oklch(0.87 0.17 95);
-  --blue: oklch(0.74 0.12 250);
-  --red: oklch(0.7 0.18 27);
-  --on-signal: oklch(0.16 0.01 260);
-  --ok-soft: oklch(0.29 0.06 158);
-  --warn: oklch(0.86 0.12 90);
-  --warn-soft: oklch(0.32 0.06 90);
-  --bad-soft: oklch(0.3 0.07 27);
+  --canvas: oklch(0.2 0.014 170);
+  --canvas-2: oklch(0.255 0.016 170);
+  --paper: oklch(0.235 0.015 170);
+  --ink: oklch(0.95 0.01 90);
+  --ink-soft: oklch(0.78 0.015 90);
+  --rule: oklch(0.33 0.015 170);
+  --rule-strong: oklch(0.5 0.02 170);
+  --green: oklch(0.66 0.1 165);
+  --yellow: oklch(0.82 0.115 82);
+  --tag: oklch(0.82 0.11 84);
+  --blue: oklch(0.74 0.08 235);
+  --red: oklch(0.7 0.14 32);
+  --on-signal: oklch(0.17 0.015 170);
+  --black: oklch(0.13 0.01 170);
+  --ok-soft: oklch(0.29 0.04 165);
+  --warn: oklch(0.84 0.1 85);
+  --warn-soft: oklch(0.32 0.05 85);
+  --bad-soft: oklch(0.3 0.05 32);
   --shadow-soft: 0 1px 2px oklch(0 0 0 / 0.35), 0 16px 36px -18px oklch(0 0 0 / 0.65);
 }
 
@@ -99,7 +101,7 @@ body {
 
 ::selection {
   background: var(--yellow);
-  color: oklch(0.2 0.012 260);
+  color: oklch(0.25 0.03 170);
 }
 
 :focus-visible {
@@ -134,8 +136,8 @@ h2 em {
 
 /* the number that matters rides on a yellow label, like a tag on a valve */
 .hl {
-  background: var(--yellow);
-  color: oklch(0.2 0.012 260);
+  background: var(--tag);
+  color: oklch(0.25 0.03 170);
   padding: 0 0.14em;
   margin: 0 0.02em;
   border-radius: 0.14em;
@@ -386,7 +388,7 @@ h2 em {
     transform-origin: left;
     border-radius: 4px;
     background: var(--yellow);
-    box-shadow: inset 0 0 0 1.5px oklch(0.2 0.012 260 / 0.85);
+    box-shadow: inset 0 -2px 0 oklch(0 0 0 / 0.14);
     animation: grow 700ms var(--ease-out) both;
   }
   .bar[data-state="full"] > span {
@@ -417,16 +419,15 @@ h2 em {
     pointer-events: none;
     opacity: 0.92;
   }
-  .sign-green { --sign-bg: var(--green); --sign-fg: oklch(0.99 0.003 100); }
-  .sign-yellow { --sign-bg: var(--yellow); --sign-fg: oklch(0.2 0.012 260); }
-  .sign-red { --sign-bg: var(--red); --sign-fg: oklch(0.99 0.003 100); }
-  .sign-blue { --sign-bg: var(--blue); --sign-fg: oklch(0.99 0.003 100); }
-  .sign-black { --sign-bg: oklch(0.2 0.012 260); --sign-fg: oklch(0.99 0.003 100); }
+  .sign-green { --sign-bg: var(--green); --sign-fg: oklch(0.97 0.012 90); }
+  .sign-yellow { --sign-bg: var(--yellow); --sign-fg: oklch(0.25 0.03 170); }
+  .sign-red { --sign-bg: var(--red); --sign-fg: oklch(0.97 0.012 90); }
+  .sign-blue { --sign-bg: var(--blue); --sign-fg: oklch(0.97 0.012 90); }
+  .sign-black { --sign-bg: var(--black); --sign-fg: oklch(0.97 0.012 90); }
   html[data-theme="night"] .sign-green,
   html[data-theme="night"] .sign-red,
-  html[data-theme="night"] .sign-blue { --sign-fg: oklch(0.16 0.01 260); }
-  html[data-theme="night"] .sign-black { --sign-bg: oklch(0.1 0.006 260); }
-
+  html[data-theme="night"] .sign-blue { --sign-fg: oklch(0.17 0.015 170); }
+  
   .row-hover {
     transition: background-color 160ms var(--ease-out), padding-left 220ms var(--ease-out);
   }

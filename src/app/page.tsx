@@ -59,7 +59,7 @@ export default function Home() {
             <span aria-hidden className="absolute top-[1.1rem] right-[16%] left-[3%] hidden h-2 rounded-full bg-ink md:block" />
             {STEPS.map((s, i) => (
               <li key={s.t} className="rise relative" style={{ ["--d" as string]: i }}>
-                <span className="tnum relative grid size-11 place-items-center rounded-full border-[6px] border-ink bg-yellow text-lg font-black text-[oklch(0.2_0.012_260)]">{i + 1}</span>
+                <span className="tnum relative grid size-11 place-items-center rounded-full border-[6px] border-ink bg-yellow text-lg font-black text-[oklch(0.25_0.03_170)]">{i + 1}</span>
                 <h3 className="mt-5 text-2xl">{s.t}</h3>
                 <p className="mt-2 max-w-[36ch] text-ink-soft">{s.d}</p>
               </li>
@@ -85,7 +85,7 @@ export default function Home() {
         <section aria-labelledby="cta-h" className="sign sign-green mt-28 px-8 py-14 sm:px-14">
           <div className="flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
             <h2 id="cta-h" className="max-w-[16ch] text-4xl sm:text-6xl">Find your number before you need it.</h2>
-            <Link href="/setup" className="btn min-h-14 border-transparent bg-yellow px-8 text-lg text-[oklch(0.2_0.012_260)] shadow-[inset_0_-3px_0_oklch(0_0_0/0.18)] hover:bg-yellow hover:brightness-105" data-testid="cta-bottom">
+            <Link href="/setup" className="btn min-h-14 border-transparent bg-yellow px-8 text-lg text-[oklch(0.25_0.03_170)] shadow-[inset_0_-3px_0_oklch(0_0_0/0.18)] hover:bg-yellow hover:brightness-105" data-testid="cta-bottom">
               <Pictogram name="shield" className="size-5" />
               Build my plan
             </Link>
